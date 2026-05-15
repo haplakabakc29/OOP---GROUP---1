@@ -1,10 +1,11 @@
-package Proj_OOP;
+package paymentpart;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import paymentpart.PaymentPart;
 
 public class productDetails extends JFrame implements ActionListener {
 
@@ -14,12 +15,11 @@ public class productDetails extends JFrame implements ActionListener {
     private JTextArea lblProductDesc;
 
     productDetails(String name, String price, String description) {
-
         setLayout(null);
         setSize(550, 500);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         getContentPane().setBackground(Color.WHITE);
-        setTitle("Online Shopping System");
+        setTitle("Gadget Details");
         setLocationRelativeTo(null);
 
         btnBack = new JButton("← Back");
@@ -160,10 +160,12 @@ public class productDetails extends JFrame implements ActionListener {
         lblProductDesc.setText(description);
     }
 
+    
     @Override
     public void actionPerformed(ActionEvent e) {
 
         int QTY = Integer.parseInt(lblQty.getText().trim());
+        
         if (e.getSource() == btnInc) {
             QTY += 1;
         } else if (e.getSource() == btnDec) {
@@ -175,6 +177,12 @@ public class productDetails extends JFrame implements ActionListener {
         if (e.getSource() == btnBack) {
             dispose();
         }
+        
+        if (e.getSource() == btnBuyNow){
+            PaymentPart payment = new PaymentPart();
+            payment.setVisible(true);
+            
+    }
         lblQty.setText(String.valueOf(QTY));
     }
 }
