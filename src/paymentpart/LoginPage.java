@@ -11,7 +11,7 @@ public class LoginPage extends JFrame {
     private JLabel brandName;
     private JTextField emailField;
     private JPasswordField passwordField;
-    private JButton loginButton, createAccountButton;
+    private JButton loginButton;
     private JPanel card;
 
     public LoginPage() {
@@ -51,19 +51,23 @@ public class LoginPage extends JFrame {
         loginButton.setBounds(50, 240, 250, 40);
         card.add(loginButton);
 
-        createAccountButton = new JButton("Create Account");
-        createAccountButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        createAccountButton.setContentAreaFilled(false);
-        createAccountButton.setBorderPainted(false);
-        createAccountButton.setBounds(50, 290, 250, 30);
-        card.add(createAccountButton);
+        
         
 
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dispose(); 
-                PaymentPart paymentPage = new PaymentPart(); 
-                paymentPage.setVisible(true); 
+                String username = emailField.getText();
+                String password = new String(passwordField.getPassword()); 
+
+                
+                if (username.equals("user") && password.equals("123")) {
+                    dispose(); 
+                    browsePage browsePage = new browsePage(); 
+                    browsePage.setVisible(true); 
+                } else {
+                  
+                    JOptionPane.showMessageDialog(null, "Invalid Username or Password!", "Login Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }
