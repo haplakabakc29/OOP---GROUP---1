@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class CheckoutPage extends JFrame {
 
@@ -13,13 +14,14 @@ public class CheckoutPage extends JFrame {
     private JTextArea receiptArea;
     private int totalAmount = 0;
 
-    public CheckoutPage(String[] itemNames, int[] itemPrices) {
+    public CheckoutPage(ArrayList<String> itemNames, ArrayList<Integer> itemPrices) {
         setTitle("Order Summary");
         setSize(550, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         getContentPane().setBackground(new Color(240, 240, 240));
         setLayout(null);
+
 
         card = new JPanel();
         card.setLayout(null);
@@ -36,15 +38,17 @@ public class CheckoutPage extends JFrame {
         receiptArea = new JTextArea();
         receiptArea.setEditable(false);
         receiptArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
-        receiptArea.setBounds(40, 80, 270, 150);
-        receiptArea.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
-        card.add(receiptArea);
-        
-        for (int i = 0; i < itemNames.length; i++) {
-            if (itemNames[i] != null) {
-                receiptArea.append((i + 1) + ". " + itemNames[i] + " - P " + itemPrices[i] + "\n");
-                totalAmount += itemPrices[i]; 
-            }
+        receiptArea.setForeground(Color.BLACK); 
+        JScrollPane scrollPane = new JScrollPane(receiptArea);
+        scrollPane.setBounds(40, 80, 270, 150);
+        scrollPane.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        card.add(scrollPane);
+ 
+        for (int i = 0; i < itemNames.size(); i++) {
+            receiptArea.append((i + 1) + ". " + itemNames.get(i) + " - P " + itemPrices.get(i) + "\n");
+            totalAmount += itemPrices.get(i);
         } 
 
         totalLabel = new JLabel("Total to Pay: P " + totalAmount);
@@ -61,13 +65,12 @@ public class CheckoutPage extends JFrame {
 
         proceedButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dispose();
                 new PaymentPart().setVisible(true); 
             }
         });
     }
 
     public static void main(String[] args) {
-        new CheckoutPage(new String[10], new int[10]).setVisible(true);
+        new CheckoutPage(new ArrayList<String>(), new ArrayList<Integer>()).setVisible(true);
     }
 }

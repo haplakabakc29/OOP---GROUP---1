@@ -17,7 +17,8 @@ public class productDetails extends JFrame implements ActionListener {
     private String currentName;
     private int currentPrice;
 
-    productDetails(String name, int price, String description, browsePage main) {
+    // Fixed: Added 'public' to constructor so browsePage can instantiate it
+    public productDetails(String name, int price, String description, browsePage main) {
         this.mainPage = main;
         this.currentName = name;
         this.currentPrice = price;
