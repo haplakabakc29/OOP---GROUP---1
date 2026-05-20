@@ -1,20 +1,21 @@
-package com.mycompany.viewprofile;
+package eCommerceSystem;
+import eCommerceData.LoggedUserData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
  
-public class ViewProfile extends JFrame implements ActionListener  {
+public class ViewProfilePage extends JFrame implements ActionListener  {
     
     private JLabel brandName, profilePicLabel, usernameLabel, userMemberLabel;
     private JButton logoutButton, btnBack;
     private JPanel card;
     
-    private loggedUser userVP;
-    private browsePage mainBP;
+    private LoggedUserData userVP;
+    private BrowsePage mainBP;
 
-    public ViewProfile(loggedUser user, browsePage main) {
+    public ViewProfilePage(LoggedUserData user, BrowsePage main) {
         
         this.userVP = user;
         this.mainBP = main;

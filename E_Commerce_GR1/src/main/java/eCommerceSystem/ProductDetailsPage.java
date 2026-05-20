@@ -1,4 +1,5 @@
-package com.mycompany.viewprofile;
+package eCommerceSystem;
+import eCommerceData.LoggedUserData;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -6,24 +7,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class productDetails extends JFrame implements ActionListener {
+public class ProductDetailsPage extends JFrame implements ActionListener {
 
     private JButton btnBack, btnCart, btnProfile, btnBuyNow, btnInc, btnDec, btnAddToCart;
     private JLabel lblImage, lblProductName, lblProductPrice, lblDesc, lblStars, lblReview, lblQty;
     private JSeparator navLine, line1, line2, line3;
     private JTextArea lblProductDesc;
     
-    private loggedUser userPD;
-    private browsePage mainPage;
+    private LoggedUserData userPD;
+    private BrowsePage mainPage;
     private String currentName;
     private int currentPrice;
+    private ImageIcon productIcon;
 
     // Fixed: Added 'public' to constructor so browsePage can instantiate it in short nag loloko nung una
-    public productDetails(String name, int price, String description, browsePage main, loggedUser user) {
+    public ProductDetailsPage(String name, int price, String description, BrowsePage main, LoggedUserData user, ImageIcon icon) {
         this.mainPage = main;
         this.currentName = name;
         this.currentPrice = price;
         this.userPD = user;
+        this.productIcon = icon;
             
         setLayout(null);
         setSize(550, 500);
@@ -64,7 +67,7 @@ public class productDetails extends JFrame implements ActionListener {
         navLine.setForeground(new Color(200, 200, 200));
         add(navLine);
 
-        lblImage = new JLabel(" ");
+        lblImage = new JLabel(icon);
         lblImage.setBounds(20, 70, 180, 180);
         lblImage.setBackground(new Color(245, 245, 245));
         lblImage.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
@@ -126,7 +129,7 @@ public class productDetails extends JFrame implements ActionListener {
         btnDec = new JButton("-");
         btnDec.setBounds(220, 280, 45, 30);
         btnDec.setBackground(Color.WHITE);
-        btnDec.setForeground(Color.DARK_GRAY);
+        btnDec.setForeground(Color.BLACK);
         btnDec.setFont(new Font("Serif", Font.BOLD, 15));
         btnDec.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
         btnDec.addActionListener(this);
@@ -143,7 +146,7 @@ public class productDetails extends JFrame implements ActionListener {
         btnInc = new JButton("+");
         btnInc.setBounds(315, 280, 45, 30);
         btnInc.setBackground(Color.WHITE);
-        btnInc.setForeground(Color.DARK_GRAY);
+        btnInc.setForeground(Color.BLACK);
         btnInc.setFont(new Font("Serif", Font.BOLD, 15));
         btnInc.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
         btnInc.addActionListener(this);
@@ -151,18 +154,18 @@ public class productDetails extends JFrame implements ActionListener {
 
         btnBuyNow = new JButton("Buy Now");
         btnBuyNow.setBounds(365, 280, 145, 30);
-        btnBuyNow.setBackground(Color.WHITE);
-        btnBuyNow.setForeground(Color.DARK_GRAY);
-        btnBuyNow.setFont(new Font("Serif", Font.PLAIN, 14));
+        btnBuyNow.setBackground(Color.DARK_GRAY);
+        btnBuyNow.setForeground(Color.WHITE);
+        btnBuyNow.setFont(new Font("Serif", Font.BOLD, 14));
         btnBuyNow.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
         btnBuyNow.addActionListener(this);
         add(btnBuyNow);
 
         btnAddToCart = new JButton("Add to Cart");
         btnAddToCart.setBounds(220, 320, 290, 35);
-        btnAddToCart.setBackground(Color.WHITE);
-        btnAddToCart.setForeground(Color.DARK_GRAY);
-        btnAddToCart.setFont(new Font("Serif", Font.PLAIN, 14));
+        btnAddToCart.setBackground(Color.DARK_GRAY);
+        btnAddToCart.setForeground(Color.WHITE);
+        btnAddToCart.setFont(new Font("Serif", Font.BOLD, 14));
         btnAddToCart.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
         btnAddToCart.addActionListener(this);
         add(btnAddToCart);
@@ -191,7 +194,7 @@ public class productDetails extends JFrame implements ActionListener {
             
         } else if (e.getSource() == btnBuyNow) {
             dispose();
-            PaymentPart payment = new PaymentPart(userPD);
+            PaymentPage payment = new PaymentPage(userPD);
             payment.setVisible(true);
         }
 //        } else if (e.getSource() == btnProfile) {

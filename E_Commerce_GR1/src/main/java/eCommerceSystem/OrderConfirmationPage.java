@@ -1,21 +1,21 @@
-package com.mycompany.viewprofile;
+package eCommerceSystem;
+import eCommerceData.LoggedUserData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class OrderConfirmaPart extends JFrame implements ActionListener {
+public class OrderConfirmationPage extends JFrame implements ActionListener {
     
     private JLabel mainTitle, checkIcon, statusLabel, idLabel;
     private JButton trackButton, continueButton;
     private JPanel card;
     
-    private loggedUser userOC;
+    private LoggedUserData userOC;
     
-    public OrderConfirmaPart(loggedUser user) {
+    public OrderConfirmationPage(LoggedUserData user) {
         this.userOC = user;
-
         
         setTitle("Order Confirmation Screen");
         setSize(550, 500);

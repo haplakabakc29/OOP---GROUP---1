@@ -1,11 +1,11 @@
-package com.mycompany.viewprofile;
+package eCommerceData;
 
 //inheritance subclass
-public class loggedUser extends User {
+public class LoggedUserData extends UserData {
     
     private String memberType;
 
-    public loggedUser(String username, String password) {
+    public LoggedUserData(String username, String password) {
         super(username, password);
         this.memberType = "Gold Member";
     }

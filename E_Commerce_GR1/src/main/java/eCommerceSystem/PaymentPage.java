@@ -1,11 +1,12 @@
-package com.mycompany.viewprofile;
+package eCommerceSystem;
+import eCommerceData.LoggedUserData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PaymentPart extends JFrame implements ActionListener {
+public class PaymentPage extends JFrame implements ActionListener {
     
     private JLabel mainTitle, methodLabel, cardNumberLabel, expiryLabel, cvvLabel;
     private JPanel card;
@@ -14,9 +15,9 @@ public class PaymentPart extends JFrame implements ActionListener {
     private JButton confirmButton, btnBack;
     private String cardNumber, cvv, expiry;
     
-    private loggedUser userPP;
+    private LoggedUserData userPP;
     
-    public PaymentPart(loggedUser user) {
+    public PaymentPage(LoggedUserData user) {
         this.userPP = user;
 
         setTitle("Payment Page");
@@ -137,7 +138,7 @@ public class PaymentPart extends JFrame implements ActionListener {
     System.out.println("Opening confirmation...");
     System.out.println("User: " + userPP);
     dispose();
-    OrderConfirmaPart successScreen = new OrderConfirmaPart(userPP);
+    OrderConfirmationPage successScreen = new OrderConfirmationPage(userPP);
     successScreen.setVisible(true);
 }
         }

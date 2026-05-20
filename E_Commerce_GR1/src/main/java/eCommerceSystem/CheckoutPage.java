@@ -1,4 +1,6 @@
-package com.mycompany.viewprofile;
+package eCommerceSystem;
+import eCommerceData.LoggedUserData;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -11,8 +13,9 @@ public class CheckoutPage extends JFrame implements ActionListener {
     private JTextArea receiptArea;
     private int totalAmount = 0;
     
-    private loggedUser userCO;
-    public CheckoutPage(ArrayList<String> itemNames, ArrayList<Integer> itemPrices,loggedUser user) {
+    private LoggedUserData userCO;
+    
+    public CheckoutPage(ArrayList<String> itemNames, ArrayList<Integer> itemPrices,LoggedUserData user) {
         this.userCO = user;
         
         setTitle("Order Summary");
@@ -96,7 +99,7 @@ public class CheckoutPage extends JFrame implements ActionListener {
         card.add(totalLabel);
 
         proceedButton = new JButton("Confirm & Pay");
-        proceedButton.setFont(new Font("Serif", Font.PLAIN, 16));
+        proceedButton.setFont(new Font("Serif", Font.BOLD, 16));
         proceedButton.setBackground(Color.DARK_GRAY);
         proceedButton.setForeground(Color.WHITE);
         proceedButton.setFocusPainted(false);
@@ -109,7 +112,7 @@ public class CheckoutPage extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Your cart is empty!", "Error", JOptionPane.WARNING_MESSAGE);
                 } else {
                     dispose();
-                    new PaymentPart(userCO).setVisible(true);
+                    new PaymentPage(userCO).setVisible(true);
                 }
             }
         });

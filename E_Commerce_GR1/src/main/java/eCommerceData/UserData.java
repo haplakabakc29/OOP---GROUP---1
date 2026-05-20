@@ -1,12 +1,12 @@
-package com.mycompany.viewprofile;
+package eCommerceData;
 
 // encapsulation 
-public class User {
+public class UserData {
     private String username;
     private String password;
 
     // base / parent 
-    public User(String username, String password) {
+    public UserData(String username, String password) {
         this.username = username;
         this.password = password;
     }
