@@ -57,27 +57,14 @@ public class ViewProfilePage extends JFrame implements ActionListener  {
         sep.setForeground(new Color(220, 220, 220));
         card.add(sep);
  
-      
-        profilePicLabel = new JLabel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
- 
-             
-                g2d.setColor(new Color(220, 220, 220));
-                g2d.fillOval(0, 0, 90, 90);
- 
-               
-                g2d.setColor(new Color(180, 180, 180));
-                g2d.fillOval(27, 15, 36, 36);
- 
-                
-                g2d.fillRoundRect(15, 57, 60, 33, 30, 30);
-            }
-        };
-        profilePicLabel.setBounds(130, 90, 90, 90);
+        java.net.URL profile = BrowsePage.class.getClassLoader().getResource("profile.jpg");
+        ImageIcon profileRaw = new ImageIcon(profile);
+        Image profileScale = profileRaw.getImage().getScaledInstance(140, 130, Image.SCALE_SMOOTH);
+        ImageIcon profileIcon = new ImageIcon(profileScale);
+
+        
+        profilePicLabel = new JLabel(profileIcon);
+        profilePicLabel.setBounds(130, 100, 90, 90);
         card.add(profilePicLabel);
         
       

@@ -17,7 +17,7 @@ public class OrderConfirmationPage extends JFrame implements ActionListener {
     public OrderConfirmationPage(LoggedUserData user) {
         this.userOC = user;
         
-        setTitle("Order Confirmation Screen");
+        setTitle("Order Confirmation Notice");
         setSize(550, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);

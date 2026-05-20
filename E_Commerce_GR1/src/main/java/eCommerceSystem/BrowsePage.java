@@ -34,12 +34,11 @@ public class BrowsePage extends JFrame implements ActionListener {
         setLayout(null);
         setSize(1050, 770);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setTitle("Browse Gadget Market");
+        setTitle("Homepage");
         setLocationRelativeTo(null);
         getContentPane().setBackground(Color.WHITE);
 
         java.net.URL logo = BrowsePage.class.getClassLoader().getResource("logo.jpg");
-        
         ImageIcon logoRaw = new ImageIcon(logo);
         Image logoScale = logoRaw.getImage().getScaledInstance(150, 140, Image.SCALE_SMOOTH);
         ImageIcon logoIcon = new ImageIcon(logoScale);
@@ -359,26 +358,39 @@ public class BrowsePage extends JFrame implements ActionListener {
         btnAdd6.addActionListener(this);
         productPanel6.add(btnAdd6);
         add(productPanel6);
-
+        
+    // images para dun sa product details (2)
+    
         java.net.URL earbuds2 = BrowsePage.class.getClassLoader().getResource("earbuds2.jpg");
-        earbuds2Icon = new ImageIcon(new ImageIcon(earbuds2).getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH));
+        ImageIcon earbuds2Raw = new ImageIcon(earbuds2);
+        Image earbuds2Scale = earbuds2Raw.getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH);
+        earbuds2Icon = new ImageIcon(earbuds2Scale);
 
         java.net.URL watch2 = BrowsePage.class.getClassLoader().getResource("watch2.jpg");
-        watch2Icon = new ImageIcon(new ImageIcon(watch2).getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH));
+        ImageIcon watch2Raw = new ImageIcon(watch2);
+        Image watch2Scale = watch2Raw.getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH);
+        watch2Icon = new ImageIcon(watch2Scale);
 
         java.net.URL stand2 = BrowsePage.class.getClassLoader().getResource("stand2.jpg");
-        stand2Icon = new ImageIcon(new ImageIcon(stand2).getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH));
+        ImageIcon stand2Raw = new ImageIcon(stand2);
+        Image stand2Scale = stand2Raw.getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH);
+        stand2Icon = new ImageIcon(stand2Scale);
 
         java.net.URL charger2 = BrowsePage.class.getClassLoader().getResource("charger2.jpg");
-        charger2Icon = new ImageIcon(new ImageIcon(charger2).getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH));
+        ImageIcon charger2Raw = new ImageIcon(charger2);
+        Image charger2Scale = charger2Raw.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+        charger2Icon = new ImageIcon(charger2Scale);
 
         java.net.URL usb2 = BrowsePage.class.getClassLoader().getResource("usb2.jpg");
-        usb2Icon = new ImageIcon(new ImageIcon(usb2).getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH));
+        ImageIcon usb2Raw = new ImageIcon(usb2);
+        Image usb2Scale = usb2Raw.getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH);
+        usb2Icon = new ImageIcon(usb2Scale);
 
         java.net.URL lamp2 = BrowsePage.class.getClassLoader().getResource("lamp2.jpg");
-        lamp2Icon = new ImageIcon(new ImageIcon(lamp2).getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH));
-
-        setVisible(true);
+        ImageIcon lamp2Raw = new ImageIcon(lamp2);
+        Image lamp2Scale = lamp2Raw.getImage().getScaledInstance(160, 150, Image.SCALE_SMOOTH);
+        lamp2Icon = new ImageIcon(lamp2Scale);
+        
     }
 
     public void addToCart(String name, int price, int quantity) {
@@ -386,7 +398,7 @@ public class BrowsePage extends JFrame implements ActionListener {
             cartItems.add(name);
             cartPrices.add(price);
         }
-        JOptionPane.showMessageDialog(this, quantity + "x " + name + " added to cart!");
+        JOptionPane.showMessageDialog(null, quantity + "x " + name + " added to cart!", "Notice", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override

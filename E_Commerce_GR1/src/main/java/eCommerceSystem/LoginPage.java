@@ -34,7 +34,6 @@ public class LoginPage extends JFrame {
         add(card);
         
         java.net.URL logo = BrowsePage.class.getClassLoader().getResource("logo.jpg");
-        
         ImageIcon logoRaw = new ImageIcon(logo);
         Image logoScale = logoRaw.getImage().getScaledInstance(150, 140, Image.SCALE_SMOOTH);
         ImageIcon logoIcon = new ImageIcon(logoScale);

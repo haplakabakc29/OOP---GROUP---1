@@ -18,7 +18,7 @@ public class CheckoutPage extends JFrame implements ActionListener {
     public CheckoutPage(ArrayList<String> itemNames, ArrayList<Integer> itemPrices,LoggedUserData user) {
         this.userCO = user;
         
-        setTitle("Order Summary");
+        setTitle("Shopping Cart");
         setSize(550, 560);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -124,9 +124,4 @@ public class CheckoutPage extends JFrame implements ActionListener {
             dispose();
     }
   }
-    
-    public static void main(String[] args) {
-        new CheckoutPage(new ArrayList<String>(), new ArrayList<Integer>(), null).setVisible(true);
-    }
-
 }

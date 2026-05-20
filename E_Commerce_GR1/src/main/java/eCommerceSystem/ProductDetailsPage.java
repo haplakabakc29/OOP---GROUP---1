@@ -32,7 +32,7 @@ public class ProductDetailsPage extends JFrame implements ActionListener {
         setSize(550, 500);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         getContentPane().setBackground(Color.WHITE);
-        setTitle("Online Shopping System");
+        setTitle(name + " Details");
         setLocationRelativeTo(null);
 
         btnBack = new JButton("← Back");

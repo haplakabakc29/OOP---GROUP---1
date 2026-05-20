@@ -6,5 +6,7 @@ public class Main{
     
     LoginPage mainPage = new LoginPage();
     mainPage.setVisible(true);
+    
+    // delete txt file (header)
 }
 }
