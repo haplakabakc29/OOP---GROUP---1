@@ -2,6 +2,7 @@ package eCommerceSystem;
 import eCommerceData.LoggedUserData;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -12,16 +13,17 @@ import javax.swing.*;
 public class BrowsePage extends JFrame implements ActionListener {
 
     private JButton btnProfile, btnViewCart;
-    private JButton btnView1, btnView2, btnView3, btnView4, btnView5, btnView6;
-    private JButton btnAdd1, btnAdd2, btnAdd3, btnAdd4, btnAdd5, btnAdd6;
+    private JButton btnView1, btnView2, btnView3, btnView4, btnView5, btnView6, btnView7, btnView8, btnView9;
+    private JButton btnAdd1, btnAdd2, btnAdd3, btnAdd4, btnAdd5, btnAdd6, btnAdd7, btnAdd8, btnAdd9;
     private JLabel lblHeader;
-    private JLabel lblName1, lblName2, lblName3, lblName4, lblName5, lblName6;
-    private JLabel lblPrice1, lblPrice2, lblPrice3, lblPrice4, lblPrice5, lblPrice6;
-    private JLabel lblImageLogo, lblImage1, lblImage2, lblImage3, lblImage4, lblImage5, lblImage6;
-    private JPanel productPanel1, productPanel2, productPanel3, productPanel4, productPanel5, productPanel6;
+    private JLabel lblName1, lblName2, lblName3, lblName4, lblName5, lblName6, lblName7, lblName8, lblName9;
+    private JLabel lblPrice1, lblPrice2, lblPrice3, lblPrice4, lblPrice5, lblPrice6, lblPrice7, lblPrice8, lblPrice9;
+    private JLabel lblImageLogo, lblImage1, lblImage2, lblImage3, lblImage4, lblImage5, lblImage6, lblImage7, lblImage8, lblImage9;
+    private JPanel productPanel1, productPanel2, productPanel3, productPanel4, productPanel5, productPanel6, productPanel7, productPanel8, productPanel9;
+    private JPanel productsPanel;
     private JSeparator navLine;
 
-    private ImageIcon earbuds2Icon, watch2Icon, stand2Icon, charger2Icon, usb2Icon, lamp2Icon;
+    private ImageIcon earbuds2Icon, watch2Icon, stand2Icon, charger2Icon, usb2Icon, lamp2Icon, controller2Icon, speaker2Icon, cam2Icon;
 
     private LoggedUserData userBP;
 
@@ -37,6 +39,18 @@ public class BrowsePage extends JFrame implements ActionListener {
         setTitle("Homepage");
         setLocationRelativeTo(null);
         getContentPane().setBackground(Color.WHITE);
+        
+        productsPanel = new JPanel();
+        productsPanel.setLayout(null);
+        productsPanel.setBackground(Color.WHITE);
+        productsPanel.setPreferredSize(new Dimension(1000, 1100));
+        
+        JScrollPane scrollPane = new JScrollPane(productsPanel);
+        scrollPane.setBounds(0, 55, 1035, 675);
+
+        scrollPane.setHorizontalScrollBarPolicy(
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        add(scrollPane);
 
         java.net.URL logo = BrowsePage.class.getClassLoader().getResource("logo.jpg");
         ImageIcon logoRaw = new ImageIcon(logo);
@@ -121,7 +135,7 @@ public class BrowsePage extends JFrame implements ActionListener {
         btnAdd1.setBorderPainted(false);
         btnAdd1.addActionListener(this);
         productPanel1.add(btnAdd1);
-        add(productPanel1);
+        productsPanel.add(productPanel1);
 
         productPanel2 = new JPanel(null);
         productPanel2.setBounds(360, 85, 270, 300);
@@ -168,7 +182,7 @@ public class BrowsePage extends JFrame implements ActionListener {
         btnAdd2.setBorderPainted(false);
         btnAdd2.addActionListener(this);
         productPanel2.add(btnAdd2);
-        add(productPanel2);
+        productsPanel.add(productPanel2);
 
         productPanel3 = new JPanel(null);
         productPanel3.setBounds(660, 85, 270, 300);
@@ -215,7 +229,7 @@ public class BrowsePage extends JFrame implements ActionListener {
         btnAdd3.setBorderPainted(false);
         btnAdd3.addActionListener(this);
         productPanel3.add(btnAdd3);
-        add(productPanel3);
+        productsPanel.add(productPanel3);
 
         productPanel4 = new JPanel(null);
         productPanel4.setBounds(60, 415, 270, 300);
@@ -263,7 +277,7 @@ public class BrowsePage extends JFrame implements ActionListener {
         btnAdd4.setBorderPainted(false);
         btnAdd4.addActionListener(this);
         productPanel4.add(btnAdd4);
-        add(productPanel4);
+        productsPanel.add(productPanel4);
 
         productPanel5 = new JPanel(null);
         productPanel5.setBounds(360, 415, 270, 300);
@@ -310,7 +324,7 @@ public class BrowsePage extends JFrame implements ActionListener {
         btnAdd5.setBorderPainted(false);
         btnAdd5.addActionListener(this);
         productPanel5.add(btnAdd5);
-        add(productPanel5);
+        productsPanel.add(productPanel5);
 
         productPanel6 = new JPanel(null);
         productPanel6.setBounds(660, 415, 270, 300);
@@ -357,7 +371,140 @@ public class BrowsePage extends JFrame implements ActionListener {
         btnAdd6.setBorderPainted(false);
         btnAdd6.addActionListener(this);
         productPanel6.add(btnAdd6);
-        add(productPanel6);
+        productsPanel.add(productPanel6);
+        
+        productPanel7 = new JPanel(null);
+        productPanel7.setBounds(60, 745, 270, 300);
+        productPanel7.setBackground(Color.WHITE);
+        productPanel7.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
+        
+        java.net.URL speaker1 = BrowsePage.class.getClassLoader().getResource("speaker1.jpg");
+        ImageIcon speaker1Raw = new ImageIcon(speaker1);
+        Image speaker1Scale = speaker1Raw.getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH);
+        ImageIcon speaker1Icon = new ImageIcon(speaker1Scale);
+        
+        lblImage7 = new JLabel(speaker1Icon);
+        lblImage7.setBounds(55, 20, 170, 160);
+        productPanel7.add(lblImage7);
+
+        lblName7 = new JLabel("Bluetooth Speaker");
+        lblName7.setBounds(15, 193, 240, 25);
+        lblName7.setFont(new Font("Serif", Font.BOLD + Font.ITALIC, 21));
+        productPanel7.add(lblName7);
+
+        lblPrice7 = new JLabel("₱ 1499");
+        lblPrice7.setBounds(15, 220, 240, 25);
+        lblPrice7.setFont(new Font("Serif", Font.PLAIN, 17));
+        lblPrice7.setForeground(Color.DARK_GRAY);
+        productPanel7.add(lblPrice7);
+
+        btnView7 = new JButton("View Details");
+        btnView7.setBounds(15, 255, 115, 30);
+        btnView7.setBackground(Color.DARK_GRAY);
+        btnView7.setForeground(Color.WHITE);
+        btnView7.setFont(new Font("Serif", Font.BOLD, 14));
+        btnView7.setBorderPainted(false);
+        btnView7.addActionListener(this);
+        productPanel7.add(btnView7);
+
+        btnAdd7 = new JButton("Add to Cart");
+        btnAdd7.setBounds(140, 255, 115, 30);
+        btnAdd7.setBackground(Color.DARK_GRAY);
+        btnAdd7.setForeground(Color.WHITE);
+        btnAdd7.setFont(new Font("Serif", Font.BOLD, 14));
+        btnAdd7.setBorderPainted(false);
+        btnAdd7.addActionListener(this);
+        productPanel7.add(btnAdd7);
+        productsPanel.add(productPanel7);
+        
+        productPanel8 = new JPanel(null);
+        productPanel8.setBounds(360, 745, 270, 300);
+        productPanel8.setBackground(Color.WHITE);
+        productPanel8.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
+        
+        java.net.URL cam1 = BrowsePage.class.getClassLoader().getResource("cam1.jpg");
+        ImageIcon cam1Raw = new ImageIcon(cam1);
+        Image cam1Scale = cam1Raw.getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH);
+        ImageIcon cam1Icon = new ImageIcon(cam1Scale);
+        
+        lblImage8 = new JLabel(cam1Icon);
+        lblImage8.setBounds(55, 20, 170, 160);
+        productPanel8.add(lblImage8);
+
+        lblName8 = new JLabel("Digital Camera");
+        lblName8.setBounds(15, 193, 240, 25);
+        lblName8.setFont(new Font("Serif", Font.BOLD + Font.ITALIC, 21));
+        productPanel8.add(lblName8);
+
+        lblPrice8 = new JLabel("₱ 6499");
+        lblPrice8.setBounds(15, 220, 240, 25);
+        lblPrice8.setFont(new Font("Serif", Font.PLAIN, 17));
+        lblPrice8.setForeground(Color.DARK_GRAY);
+        productPanel8.add(lblPrice8);
+
+        btnView8 = new JButton("View Details");
+        btnView8.setBounds(15, 255, 115, 30);
+        btnView8.setBackground(Color.DARK_GRAY);
+        btnView8.setForeground(Color.WHITE);
+        btnView8.setFont(new Font("Serif", Font.BOLD, 14));
+        btnView8.setBorderPainted(false);
+        btnView8.addActionListener(this);
+        productPanel8.add(btnView8);
+
+        btnAdd8 = new JButton("Add to Cart");
+        btnAdd8.setBounds(140, 255, 115, 30);
+        btnAdd8.setBackground(Color.DARK_GRAY);
+        btnAdd8.setForeground(Color.WHITE);
+        btnAdd8.setFont(new Font("Serif", Font.BOLD, 14));
+        btnAdd8.setBorderPainted(false);
+        btnAdd8.addActionListener(this);
+        productPanel8.add(btnAdd8);
+        productsPanel.add(productPanel8);
+
+        productPanel9 = new JPanel(null);
+        productPanel9.setBounds(660, 745, 270, 300);
+        productPanel9.setBackground(Color.WHITE);
+        productPanel9.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
+        
+        java.net.URL controller1 = BrowsePage.class.getClassLoader().getResource("controller1.jpg");
+        ImageIcon controller1Raw = new ImageIcon(controller1);
+        Image controller1Scale = controller1Raw.getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH);
+        ImageIcon controller1Icon = new ImageIcon(controller1Scale);
+        
+        lblImage9 = new JLabel(controller1Icon);
+        lblImage9.setBounds(55, 20, 170, 160);
+        productPanel9.add(lblImage9);
+
+        lblName9 = new JLabel("Gaming Controller");
+        lblName9.setBounds(15, 193, 240, 25);
+        lblName9.setFont(new Font("Serif", Font.BOLD + Font.ITALIC, 21));
+        productPanel9.add(lblName9);
+
+        lblPrice9 = new JLabel("₱ 1,499");
+        lblPrice9.setBounds(15, 220, 240, 25);
+        lblPrice9.setFont(new Font("Serif", Font.PLAIN, 17));
+        lblPrice9.setForeground(Color.DARK_GRAY);
+        productPanel9.add(lblPrice9);
+
+        btnView9 = new JButton("View Details");
+        btnView9.setBounds(15, 255, 115, 30);
+        btnView9.setBackground(Color.DARK_GRAY);
+        btnView9.setForeground(Color.WHITE);
+        btnView9.setFont(new Font("Serif", Font.BOLD, 14));
+        btnView9.setBorderPainted(false);
+        btnView9.addActionListener(this);
+        productPanel9.add(btnView9);
+
+        btnAdd9 = new JButton("Add to Cart");
+        btnAdd9.setBounds(140, 255, 115, 30);
+        btnAdd9.setBackground(Color.DARK_GRAY);
+        btnAdd9.setForeground(Color.WHITE);
+        btnAdd9.setFont(new Font("Serif", Font.BOLD, 14));
+        btnAdd9.setBorderPainted(false);
+        btnAdd9.addActionListener(this);
+        productPanel9.add(btnAdd9);
+        productsPanel.add(productPanel9);
+       
         
     // images para dun sa product details (2)
     
@@ -391,6 +538,21 @@ public class BrowsePage extends JFrame implements ActionListener {
         Image lamp2Scale = lamp2Raw.getImage().getScaledInstance(160, 150, Image.SCALE_SMOOTH);
         lamp2Icon = new ImageIcon(lamp2Scale);
         
+        java.net.URL controller2 = BrowsePage.class.getClassLoader().getResource("controller2.jpg");
+        ImageIcon controller2Raw = new ImageIcon(controller2);
+        Image controller2Scale = controller2Raw.getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH);
+        controller2Icon = new ImageIcon(controller2Scale);
+
+        java.net.URL speaker2 = BrowsePage.class.getClassLoader().getResource("speaker2.jpg");
+        ImageIcon speaker2Raw = new ImageIcon(speaker2);
+        Image speaker2Scale = speaker2Raw.getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH);
+        speaker2Icon = new ImageIcon(speaker2Scale);
+
+        java.net.URL cam2 = BrowsePage.class.getClassLoader().getResource("camera2.jpg");
+        ImageIcon cam2Raw = new ImageIcon(cam2);
+        Image cam2Scale = cam2Raw.getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH);
+        cam2Icon = new ImageIcon(cam2Scale);
+        
     }
 
     public void addToCart(String name, int price, int quantity) {
@@ -405,27 +567,46 @@ public class BrowsePage extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnViewCart) {
             new CheckoutPage(cartItems, cartPrices, userBP).setVisible(true);
+
         } else if (e.getSource() == btnView1) {
             new ProductDetailsPage("Wireless Earbuds", 1299, "Compact earbuds with clear sound and long \nbattery life", this, userBP, earbuds2Icon).setVisible(true);
+
         } else if (e.getSource() == btnView2) {
             new ProductDetailsPage("Smart Watch", 2499, "Tracks your steps, heart rate, and notifications \non your wrist", this, userBP, watch2Icon).setVisible(true);
+
         } else if (e.getSource() == btnView3) {
             new ProductDetailsPage("Phone Stand", 349, "Adjustable desk stand compatible with any \nsmartphone", this, userBP, stand2Icon).setVisible(true);
+
         } else if (e.getSource() == btnView4) {
             new ProductDetailsPage("Portable Charger", 899, "10,000mAh power bank that charges \nyour devices on the go", this, userBP, charger2Icon).setVisible(true);
+
         } else if (e.getSource() == btnView5) {
             new ProductDetailsPage("USB Hub", 599, "4-port USB hub to connect multiple devices \nat once", this, userBP, usb2Icon).setVisible(true);
+
         } else if (e.getSource() == btnView6) {
             new ProductDetailsPage("LED Desk Lamp", 749, "Touch-controlled lamp with adjustable brightness \nlevels", this, userBP, lamp2Icon).setVisible(true);
+
+        } else if (e.getSource() == btnView7) {
+            new ProductDetailsPage("Bluetooth Speaker", 999, "Portable speaker with powerful sound and \nwireless Bluetooth connectivity", this, userBP, speaker2Icon).setVisible(true);
+
+        } else if (e.getSource() == btnView9) {
+            new ProductDetailsPage("Gaming Controller", 1299, "Wireless controller compatible with PC, \nmobile devices and gaming consoles", this, userBP, controller2Icon).setVisible(true);
+
+        } else if (e.getSource() == btnView8) {
+            new ProductDetailsPage("Digital Camera", 3499, "Capture high-quality photos and videos with \nadvanced camera features", this, userBP, cam2Icon).setVisible(true);
         }
 
-        if (e.getSource() == btnAdd1) addToCart("Wireless Earbuds", 1299, 1);
-        if (e.getSource() == btnAdd2) addToCart("Smart Watch", 2499, 1);
-        if (e.getSource() == btnAdd3) addToCart("Phone Stand", 349, 1);
-        if (e.getSource() == btnAdd4) addToCart("Portable Charger", 899, 1);
-        if (e.getSource() == btnAdd5) addToCart("USB Hub", 599, 1);
-        if (e.getSource() == btnAdd6) addToCart("LED Desk Lamp", 749, 1);
+            if (e.getSource() == btnAdd1) addToCart("Wireless Earbuds", 1299, 1);
+            if (e.getSource() == btnAdd2) addToCart("Smart Watch", 2499, 1);
+            if (e.getSource() == btnAdd3) addToCart("Phone Stand", 349, 1);
+            if (e.getSource() == btnAdd4) addToCart("Portable Charger", 899, 1);
+            if (e.getSource() == btnAdd5) addToCart("USB Hub", 599, 1);
+            if (e.getSource() == btnAdd6) addToCart("LED Desk Lamp", 749, 1);
 
+            if (e.getSource() == btnAdd7) addToCart("Bluetooth Speaker", 999, 1);
+            if (e.getSource() == btnAdd8) addToCart("Gaming Controller", 1299, 1);
+            if (e.getSource() == btnAdd9) addToCart("Digital Camera", 3499, 1);
+            
         if (e.getSource() == btnProfile) {
             ViewProfilePage vp = new ViewProfilePage(userBP, this);
             vp.setVisible(true);

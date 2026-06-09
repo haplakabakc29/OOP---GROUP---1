@@ -20,7 +20,6 @@ public class ProductDetailsPage extends JFrame implements ActionListener {
     private int currentPrice;
     private ImageIcon productIcon;
 
-    // Fixed: Added 'public' to constructor so browsePage can instantiate it in short nag loloko nung una
     public ProductDetailsPage(String name, int price, String description, BrowsePage main, LoggedUserData user, ImageIcon icon) {
         this.mainPage = main;
         this.currentName = name;
@@ -43,24 +42,6 @@ public class ProductDetailsPage extends JFrame implements ActionListener {
         btnBack.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
         btnBack.addActionListener(this);
         add(btnBack);
-
-//        btnProfile = new JButton("👤");
-//        btnProfile.setBounds(425, 10, 45, 30);
-//        btnProfile.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
-//        btnProfile.setBackground(Color.WHITE);
-//        btnProfile.setForeground(Color.DARK_GRAY);
-//        btnProfile.setFont(new Font("Serif", Font.PLAIN, 14));
-//        btnProfile.addActionListener(this);
-//        add(btnProfile);
-//
-//        btnCart = new JButton("🛒");
-//        btnCart.setBounds(480, 10, 45, 30);
-//        btnCart.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
-//        btnCart.setBackground(Color.WHITE);
-//        btnCart.setForeground(Color.DARK_GRAY);
-//        btnCart.setFont(new Font("Serif", Font.PLAIN, 14));
-//        btnCart.addActionListener(this);
-//        add(btnCart);
 
         navLine = new JSeparator();
         navLine.setBounds(0, 50, 550, 2);
@@ -184,23 +165,14 @@ public class ProductDetailsPage extends JFrame implements ActionListener {
         } else if (e.getSource() == btnBack) {
             dispose();
             
-//        } else if (e.getSource() == btnCart) {
-//            dispose();
-//            new CheckoutPage(mainPage.cartItems, mainPage.cartPrices).setVisible(true);
-            
         } else if (e.getSource() == btnAddToCart) {
             dispose();
             mainPage.addToCart(currentName, currentPrice, QTY);
             
         } else if (e.getSource() == btnBuyNow) {
+            int totalPrice = currentPrice * QTY;
             dispose();
-            PaymentPage payment = new PaymentPage(userPD);
-            payment.setVisible(true);
+            new PaymentPage(userPD, QTY, totalPrice).setVisible(true);
         }
-//        } else if (e.getSource() == btnProfile) {
-//            dispose();
-//            ViewProfile vProfile = new ViewProfile(userPD);
-//            vProfile.setVisible(true);
-//        }
     }
 }

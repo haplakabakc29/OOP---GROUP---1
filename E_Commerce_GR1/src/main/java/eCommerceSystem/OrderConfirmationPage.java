@@ -12,10 +12,7 @@ public class OrderConfirmationPage extends JFrame implements ActionListener {
     private JButton trackButton, continueButton;
     private JPanel card;
     
-    private LoggedUserData userOC;
-    
     public OrderConfirmationPage(LoggedUserData user) {
-        this.userOC = user;
         
         setTitle("Order Confirmation Notice");
         setSize(550, 500);
@@ -78,7 +75,7 @@ public class OrderConfirmationPage extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == continueButton) {
-            dispose();
+            dispose();    
         }
     }
 }

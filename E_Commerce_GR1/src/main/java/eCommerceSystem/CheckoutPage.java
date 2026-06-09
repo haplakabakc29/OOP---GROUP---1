@@ -7,29 +7,38 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class CheckoutPage extends JFrame implements ActionListener {
+
     private JPanel card;
-    private JLabel title, totalLabel;
-    private JButton proceedButton, btnBack;
-    private JTextArea receiptArea;
+    private JLabel title, totalLabel, receiptLabel, totalTitle;
+    private JButton proceedButton, btnBack, rmvBTN, clearBTN;
+    private JScrollPane scrollPane;
+
+    private JList<String> receiptArea;
+    private DefaultListModel<String> listModel;
+
     private int totalAmount = 0;
-    
     private LoggedUserData userCO;
-    
-    public CheckoutPage(ArrayList<String> itemNames, ArrayList<Integer> itemPrices,LoggedUserData user) {
-        this.userCO = user;
-        
+
+    private ArrayList<String> itemNames;
+    private ArrayList<Integer> itemPrices;
+
+    public CheckoutPage(ArrayList<String> itemNames, ArrayList<Integer> itemPrices, LoggedUserData user) {
+        this.userCO    = user;
+        this.itemNames  = itemNames;
+        this.itemPrices = itemPrices;
+
         setTitle("Shopping Cart");
-        setSize(550, 560);
+        setSize(550, 590);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(null);
         getContentPane().setBackground(Color.WHITE);
-        
+
         card = new JPanel();
         card.setLayout(null);
         card.setBackground(Color.WHITE);
         card.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
-        card.setBounds(75, 40, 400, 460);
+        card.setBounds(75, 40, 400, 490);
         add(card);
 
         btnBack = new JButton("← Back");
@@ -41,7 +50,7 @@ public class CheckoutPage extends JFrame implements ActionListener {
         btnBack.setFocusPainted(false);
         btnBack.addActionListener(this);
         add(btnBack);
-        
+
         title = new JLabel("Shopping Cart", SwingConstants.CENTER);
         title.setFont(new Font("Serif", Font.BOLD + Font.ITALIC, 34));
         title.setForeground(Color.DARK_GRAY);
@@ -53,22 +62,20 @@ public class CheckoutPage extends JFrame implements ActionListener {
         sep1.setForeground(new Color(220, 220, 220));
         card.add(sep1);
 
-        JLabel receiptLabel = new JLabel("Order Items");
+        receiptLabel = new JLabel("Order Items");
         receiptLabel.setFont(new Font("Serif", Font.BOLD, 13));
         receiptLabel.setForeground(Color.GRAY);
         receiptLabel.setBounds(30, 82, 250, 20);
         card.add(receiptLabel);
 
-        receiptArea = new JTextArea();
-        receiptArea.setEditable(false);
+        listModel   = new DefaultListModel<>();
+        receiptArea = new JList<>(listModel);
         receiptArea.setFont(new Font("Serif", Font.PLAIN, 15));
         receiptArea.setForeground(Color.DARK_GRAY);
         receiptArea.setBackground(Color.WHITE);
-        receiptArea.setMargin(new Insets(8, 10, 8, 10));
-        receiptArea.setLineWrap(true);
-        receiptArea.setWrapStyleWord(true);
+        receiptArea.setFixedCellHeight(27);
 
-        JScrollPane scrollPane = new JScrollPane(receiptArea);
+        scrollPane = new JScrollPane(receiptArea);
         scrollPane.setBounds(30, 108, 340, 200);
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -76,26 +83,44 @@ public class CheckoutPage extends JFrame implements ActionListener {
         card.add(scrollPane);
 
         for (int i = 0; i < itemNames.size(); i++) {
-            receiptArea.append((i + 1) + ". " + itemNames.get(i) + " - P " + itemPrices.get(i) + "\n");
+            listModel.addElement((i + 1) + ". " + itemNames.get(i) + " - ₱ " + itemPrices.get(i));
             totalAmount += itemPrices.get(i);
         }
 
+        rmvBTN = new JButton("Remove");
+        rmvBTN.setFont(new Font("Serif", Font.BOLD, 14));
+        rmvBTN.setBackground(Color.DARK_GRAY);
+        rmvBTN.setForeground(Color.WHITE);
+        rmvBTN.setFocusPainted(false);
+        rmvBTN.setBounds(30, 315, 160, 30);
+        rmvBTN.addActionListener(this);
+        card.add(rmvBTN);
+
+        clearBTN = new JButton("Clear All");
+        clearBTN.setFont(new Font("Serif", Font.BOLD, 14));
+        clearBTN.setBackground(Color.DARK_GRAY);
+        clearBTN.setForeground(Color.WHITE);
+        clearBTN.setFocusPainted(false);
+        clearBTN.setBounds(210, 315, 160, 30);
+        clearBTN.addActionListener(this);
+        card.add(clearBTN);
+
         JSeparator sep2 = new JSeparator();
-        sep2.setBounds(30, 322, 340, 1);
+        sep2.setBounds(30, 357, 340, 1);
         sep2.setForeground(new Color(220, 220, 220));
         card.add(sep2);
 
-        JLabel totalTitle = new JLabel("Total to Pay");
+        totalTitle = new JLabel("Total to Pay");
         totalTitle.setFont(new Font("Serif", Font.BOLD, 19));
         totalTitle.setForeground(Color.DARK_GRAY);
-        totalTitle.setBounds(30, 332, 180, 30);
+        totalTitle.setBounds(30, 367, 180, 30);
         card.add(totalTitle);
 
-        totalLabel = new JLabel("P " + totalAmount);
+        totalLabel = new JLabel("₱ " + totalAmount);
         totalLabel.setFont(new Font("Serif", Font.BOLD, 24));
         totalLabel.setForeground(Color.DARK_GRAY);
         totalLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        totalLabel.setBounds(190, 326, 180, 40);
+        totalLabel.setBounds(190, 361, 180, 40);
         card.add(totalLabel);
 
         proceedButton = new JButton("Confirm & Pay");
@@ -103,7 +128,7 @@ public class CheckoutPage extends JFrame implements ActionListener {
         proceedButton.setBackground(Color.DARK_GRAY);
         proceedButton.setForeground(Color.WHITE);
         proceedButton.setFocusPainted(false);
-        proceedButton.setBounds(30, 385, 340, 45);
+        proceedButton.setBounds(30, 415, 340, 45);
         card.add(proceedButton);
 
         proceedButton.addActionListener(new ActionListener() {
@@ -111,17 +136,65 @@ public class CheckoutPage extends JFrame implements ActionListener {
                 if (totalAmount == 0) {
                     JOptionPane.showMessageDialog(null, "Your cart is empty!", "Error", JOptionPane.WARNING_MESSAGE);
                 } else {
+                    int count = itemNames.size();
+                    int total = totalAmount;
                     dispose();
-                    new PaymentPage(userCO).setVisible(true);
+                    new PaymentPage(userCO, count, total).setVisible(true);
                 }
             }
         });
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnBack) {
             dispose();
+
+        } else if (e.getSource() == rmvBTN) {
+            int indx = receiptArea.getSelectedIndex();
+            if (indx != -1) {
+                int response = JOptionPane.showConfirmDialog(
+                    this,
+                    "Are you sure you want to remove this item?",
+                    "Confirm Removal",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+                );
+                if (response == JOptionPane.YES_OPTION) {
+                    totalAmount -= itemPrices.get(indx);
+                    totalLabel.setText("₱ " + totalAmount);
+                    itemNames.remove(indx);
+                    itemPrices.remove(indx);
+                    listModel.clear();
+                    for (int i = 0; i < itemNames.size(); i++) {
+                        listModel.addElement((i + 1) + ". " + itemNames.get(i) + " - ₱ " + itemPrices.get(i));
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Select an Item to Remove", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } else if (e.getSource() == clearBTN ) {
+            if (itemNames.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Your cart is already empty!", "Info", JOptionPane.INFORMATION_MESSAGE);
+                
+            }else {
+            int response = JOptionPane.showConfirmDialog(
+                this,
+                "Remove all items from cart?",
+                "Clear Cart",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+            );
+            
+            if (response == JOptionPane.YES_OPTION) {
+                itemNames.clear();
+                itemPrices.clear();
+                listModel.clear();
+                totalAmount = 0;
+                totalLabel.setText("₱ 0");
+            }
+        }
     }
-  }
+}
 }

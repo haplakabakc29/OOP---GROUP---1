@@ -1,5 +1,6 @@
 package eCommerceSystem;
 import eCommerceData.LoggedUserData;
+import eCommerceData.UserData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,36 +9,33 @@ import java.awt.event.ActionListener;
 
 public class LoginPage extends JFrame {
 
-    private JLabel brandName, lblEmail, lblPass, lbltagline, lblGroup1, lblImageLogo;
+    private JLabel brandName, lblEmail, lblPass, lblTagline, lblGroup1, lblImageLogo;
     private JTextField emailField;
     private JPasswordField passwordField;
-    private JButton loginButton;
+    private JButton loginButton, createAccountButton;
     private JPanel card;
     private JSeparator sep, sep2;
-    
-    private LoggedUserData userLP;
 
     public LoginPage() {
         setTitle("Login / Sign Up");
-        setSize(550, 500);
+        setSize(550, 540);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(null);
-
         getContentPane().setBackground(Color.WHITE);
 
         card = new JPanel();
         card.setLayout(null);
         card.setBackground(Color.WHITE);
         card.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
-        card.setBounds(100, 25, 350, 420);
+        card.setBounds(100, 25, 350, 470);
         add(card);
-        
+
         java.net.URL logo = BrowsePage.class.getClassLoader().getResource("logo.jpg");
         ImageIcon logoRaw = new ImageIcon(logo);
         Image logoScale = logoRaw.getImage().getScaledInstance(150, 140, Image.SCALE_SMOOTH);
         ImageIcon logoIcon = new ImageIcon(logoScale);
-    
+
         lblImageLogo = new JLabel(logoIcon);
         lblImageLogo.setBounds(145, 25, 50, 50);
         card.add(lblImageLogo);
@@ -48,18 +46,18 @@ public class LoginPage extends JFrame {
         brandName.setBounds(25, 75, 300, 45);
         card.add(brandName);
 
-        lbltagline = new JLabel("The Best Gadget Shop in PUP Biñan", SwingConstants.CENTER);
-        lbltagline.setFont(new Font("Serif", Font.ITALIC, 13));
-        lbltagline.setForeground(Color.LIGHT_GRAY);
-        lbltagline.setBounds(25, 120, 300, 20);
-        card.add(lbltagline);
+        lblTagline = new JLabel("The Best Gadget Shop in PUP Biñan", SwingConstants.CENTER);
+        lblTagline.setFont(new Font("Serif", Font.ITALIC, 13));
+        lblTagline.setForeground(Color.LIGHT_GRAY);
+        lblTagline.setBounds(25, 120, 300, 20);
+        card.add(lblTagline);
 
         sep = new JSeparator();
         sep.setBounds(50, 147, 250, 1);
         sep.setForeground(new Color(220, 220, 220));
         card.add(sep);
 
-        lblEmail = new JLabel("Full Name");
+        lblEmail = new JLabel("Username");
         lblEmail.setFont(new Font("Serif", Font.PLAIN, 13));
         lblEmail.setForeground(Color.LIGHT_GRAY);
         lblEmail.setBounds(50, 162, 250, 20);
@@ -94,16 +92,26 @@ public class LoginPage extends JFrame {
         loginButton.setBorder(BorderFactory.createEmptyBorder());
         loginButton.setBounds(50, 320, 250, 45);
         card.add(loginButton);
-        
+
+        createAccountButton = new JButton("Create Account");
+        createAccountButton.setFont(new Font("Serif", Font.PLAIN, 13));
+        createAccountButton.setBackground(Color.WHITE);
+        createAccountButton.setForeground(Color.DARK_GRAY);
+        createAccountButton.setFocusPainted(false);
+        createAccountButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        createAccountButton.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
+        createAccountButton.setBounds(50, 375, 250, 35);
+        card.add(createAccountButton);
+
         sep2 = new JSeparator();
-        sep2.setBounds(50, 380, 250, 1);
+        sep2.setBounds(50, 420, 250, 1);
         sep2.setForeground(new Color(220, 220, 220));
         card.add(sep2);
 
         lblGroup1 = new JLabel("Made by: Group 1", SwingConstants.CENTER);
         lblGroup1.setFont(new Font("Serif", Font.PLAIN, 10));
         lblGroup1.setForeground(new Color(200, 200, 200));
-        lblGroup1.setBounds(25, 390, 300, 20);
+        lblGroup1.setBounds(25, 430, 300, 20);
         card.add(lblGroup1);
 
         loginButton.addActionListener(new ActionListener() {
@@ -111,16 +119,45 @@ public class LoginPage extends JFrame {
                 String username = emailField.getText().trim();
                 String password = new String(passwordField.getPassword()).trim();
 
-                if (!username.isEmpty() && !password.isEmpty()) {
-                    LoggedUserData loggedUSER = new LoggedUserData(username, password);
-                    
-                    dispose();
-                    BrowsePage br = new BrowsePage(loggedUSER);
-                    br.setVisible(true);
-                        
-                } else {
-                    JOptionPane.showMessageDialog(null, "Please enter your Fullname and Password.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                if (username.isEmpty() || password.isEmpty()) {
+                    JOptionPane.showMessageDialog(
+                            null, 
+                            "Please enter your Username and Password.", 
+                            "Login Error", 
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
+
+                if (!UserData.isValidLogin(username, password)) {
+                    JOptionPane.showMessageDialog(
+                            null, 
+                            "Invalid username or password.", 
+                            "Login Error", 
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                    
+                } else {
+
+                // bago
+                UserData account = UserData.getAccount(username);
+                LoggedUserData loggedUSER = new LoggedUserData(
+                    account.getUsername(),
+                    account.getPassword(),
+                    account.getStreet(),
+                    account.getCity(),
+                    account.getProvince());
+
+                dispose();
+                new BrowsePage(loggedUSER).setVisible(true);
+            }
+            }
+        });
+
+        createAccountButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                CreateAccountPage createA = new CreateAccountPage();
+                        createA.setVisible(true);
             }
         });
     }
