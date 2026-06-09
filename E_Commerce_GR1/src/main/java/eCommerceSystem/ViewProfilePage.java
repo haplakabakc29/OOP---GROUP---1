@@ -12,9 +12,10 @@ public class ViewProfilePage extends JFrame implements ActionListener {
     private JButton btnLogout, btnBack, btnReceived, btnCancel;
     private JList<Order> orderList;
     private DefaultListModel<Order> orderListModel;
-    private JLabel brandName, orderTitle, usernameLabel, memberLabel;
+    private JLabel brandName, orderTitle, usernameLabel, memberLabel, picLabel, addrTitle;
     private JScrollPane scrollPane;
-
+    private JPanel rightCard, leftCard;
+    private JTextArea addressField;
     private BrowsePage mainBP;
 
     public ViewProfilePage(LoggedUserData user, BrowsePage main) {
@@ -38,7 +39,7 @@ public class ViewProfilePage extends JFrame implements ActionListener {
         add(btnBack);
 
         // LEFT PANEL - profile card
-        JPanel leftCard = new JPanel(null);
+        leftCard = new JPanel(null);
         leftCard.setBackground(Color.WHITE);
         leftCard.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1));
         leftCard.setBounds(25, 55, 250, 455);
@@ -60,7 +61,7 @@ public class ViewProfilePage extends JFrame implements ActionListener {
         Image profileScale = profileRaw.getImage().getScaledInstance(140, 130, Image.SCALE_SMOOTH);
         ImageIcon profileIcon = new ImageIcon(profileScale);
             
-            JLabel picLabel  = new JLabel(profileIcon, SwingConstants.CENTER);
+            picLabel  = new JLabel(profileIcon, SwingConstants.CENTER);
             picLabel.setBounds(80, 80, 90, 90);
             leftCard.add(picLabel);
             
@@ -75,6 +76,20 @@ public class ViewProfilePage extends JFrame implements ActionListener {
         memberLabel.setForeground(Color.LIGHT_GRAY);
         memberLabel.setBounds(20, 210, 210, 20);
         leftCard.add(memberLabel);
+
+        addrTitle = new JLabel("Delivery Address:");
+        addrTitle.setFont(new Font("Serif", Font.BOLD, 14));
+        addrTitle.setForeground(Color.GRAY);
+        addrTitle.setBounds(20, 260, 210, 20);
+        leftCard.add(addrTitle);
+
+        addressField = new JTextArea(user.getFullAddress());
+        addressField.setFont(new Font("Serif", Font.PLAIN, 13));
+        addressField.setForeground(Color.DARK_GRAY);
+        addressField.setBorder(null);
+        addressField.setBackground(Color.WHITE);
+        addressField.setBounds(20, 285, 210, 60);
+        leftCard.add(addressField);
 
         JSeparator sep2 = new JSeparator();
         sep2.setBounds(20, 248, 210, 1);
@@ -91,7 +106,7 @@ public class ViewProfilePage extends JFrame implements ActionListener {
         leftCard.add(btnLogout);
 
         // RIGHT PANEL - order history
-        JPanel rightCard = new JPanel(null);
+        rightCard = new JPanel(null);
         rightCard.setBackground(Color.WHITE);
         rightCard.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1));
         rightCard.setBounds(295, 55, 550, 455);
@@ -109,10 +124,10 @@ public class ViewProfilePage extends JFrame implements ActionListener {
         rightCard.add(sep3);
 
         orderListModel = new DefaultListModel<>();
-        
+        //refresh data
         orderListModel.clear();
-        for (eCommerceData.OrderData.Order o : eCommerceData.OrderData.getOrders()) {
-        orderListModel.addElement(o);
+        for (eCommerceData.OrderData.Order ref : eCommerceData.OrderData.getOrders()) {
+            orderListModel.addElement(ref);
         }
 
         orderList = new JList<>(orderListModel);
@@ -156,7 +171,6 @@ public class ViewProfilePage extends JFrame implements ActionListener {
 
         if (e.getSource() == btnLogout) {
             
-        
             int confirmLogout = JOptionPane.showConfirmDialog(this,
             "Are you sure you want to log out?",
             "Log out",
@@ -178,7 +192,7 @@ public class ViewProfilePage extends JFrame implements ActionListener {
         if (order == null) {
             JOptionPane.showMessageDialog(
                     this, 
-                    "Please select an order first.", 
+                    "Please select an order first", 
                     "No Selection", 
                     JOptionPane.INFORMATION_MESSAGE);
             return;
@@ -187,9 +201,10 @@ public class ViewProfilePage extends JFrame implements ActionListener {
         if (order.getStatus().equals("Received")) {
             JOptionPane.showMessageDialog(
                     this, 
-                    "This order is already marked as order received.", 
+                    "This order is already marked as order received", 
                     "Already Received", 
                     JOptionPane.INFORMATION_MESSAGE);
+            
             } else {
             order.markReceived();
            
@@ -201,18 +216,32 @@ public class ViewProfilePage extends JFrame implements ActionListener {
 
             } else if (e.getSource() == btnCancel) {
                 Order orders = orderList.getSelectedValue();
+                
+        int selectedIndex = orderList.getSelectedIndex();
         
         if (orders == null) {
             JOptionPane.showMessageDialog(
                     this, 
-                    "Please select an order first.", 
+                    "Please select an order first", 
                     "No Selection", 
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }
+        if (selectedIndex != -1) {
+            String selectedItem = orderList.getSelectedValue().toString();
+            
+            if (selectedItem.contains("Order Received")) {
+                    JOptionPane.showMessageDialog(
+                        null, 
+                        "You cannot cancel an order that has already been received!", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                    return; 
+                }
 
-            int confirm = JOptionPane.showConfirmDialog(this,
-            "Are you sure? This cannot be undone.",
+            int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Are you sure? This cannot be undone",
             "Cancel Order",
             JOptionPane.YES_NO_OPTION,
             JOptionPane.WARNING_MESSAGE);
@@ -226,5 +255,6 @@ public class ViewProfilePage extends JFrame implements ActionListener {
             }
         }
     }
+}
 }
 }

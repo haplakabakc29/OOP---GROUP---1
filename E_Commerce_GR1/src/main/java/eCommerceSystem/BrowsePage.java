@@ -22,6 +22,7 @@ public class BrowsePage extends JFrame implements ActionListener {
     private JPanel productPanel1, productPanel2, productPanel3, productPanel4, productPanel5, productPanel6, productPanel7, productPanel8, productPanel9;
     private JPanel productsPanel;
     private JSeparator navLine;
+    private JScrollPane scrollPane;
 
     private ImageIcon earbuds2Icon, watch2Icon, stand2Icon, charger2Icon, usb2Icon, lamp2Icon, controller2Icon, speaker2Icon, cam2Icon;
 
@@ -45,8 +46,11 @@ public class BrowsePage extends JFrame implements ActionListener {
         productsPanel.setBackground(Color.WHITE);
         productsPanel.setPreferredSize(new Dimension(1000, 1100));
         
-        JScrollPane scrollPane = new JScrollPane(productsPanel);
+        scrollPane = new JScrollPane(productsPanel);
         scrollPane.setBounds(0, 55, 1035, 675);
+        scrollPane.setBorder(null); 
+        scrollPane.getViewport().setBackground(Color.WHITE);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16); //para bumilis
 
         scrollPane.setHorizontalScrollBarPolicy(
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -378,7 +382,7 @@ public class BrowsePage extends JFrame implements ActionListener {
         productPanel7.setBackground(Color.WHITE);
         productPanel7.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
         
-        java.net.URL speaker1 = BrowsePage.class.getClassLoader().getResource("speaker1.jpg");
+        java.net.URL speaker1 = BrowsePage.class.getClassLoader().getResource("speaker2.jpg");
         ImageIcon speaker1Raw = new ImageIcon(speaker1);
         Image speaker1Scale = speaker1Raw.getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH);
         ImageIcon speaker1Icon = new ImageIcon(speaker1Scale);
@@ -424,7 +428,7 @@ public class BrowsePage extends JFrame implements ActionListener {
         
         java.net.URL cam1 = BrowsePage.class.getClassLoader().getResource("cam1.jpg");
         ImageIcon cam1Raw = new ImageIcon(cam1);
-        Image cam1Scale = cam1Raw.getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH);
+        Image cam1Scale = cam1Raw.getImage().getScaledInstance(200, 190, Image.SCALE_SMOOTH);
         ImageIcon cam1Icon = new ImageIcon(cam1Scale);
         
         lblImage8 = new JLabel(cam1Icon);
@@ -480,7 +484,7 @@ public class BrowsePage extends JFrame implements ActionListener {
         lblName9.setFont(new Font("Serif", Font.BOLD + Font.ITALIC, 21));
         productPanel9.add(lblName9);
 
-        lblPrice9 = new JLabel("₱ 1,499");
+        lblPrice9 = new JLabel("₱ 1499");
         lblPrice9.setBounds(15, 220, 240, 25);
         lblPrice9.setFont(new Font("Serif", Font.PLAIN, 17));
         lblPrice9.setForeground(Color.DARK_GRAY);
@@ -540,17 +544,17 @@ public class BrowsePage extends JFrame implements ActionListener {
         
         java.net.URL controller2 = BrowsePage.class.getClassLoader().getResource("controller2.jpg");
         ImageIcon controller2Raw = new ImageIcon(controller2);
-        Image controller2Scale = controller2Raw.getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH);
+        Image controller2Scale = controller2Raw.getImage().getScaledInstance(200, 190, Image.SCALE_SMOOTH);
         controller2Icon = new ImageIcon(controller2Scale);
 
-        java.net.URL speaker2 = BrowsePage.class.getClassLoader().getResource("speaker2.jpg");
+        java.net.URL speaker2 = BrowsePage.class.getClassLoader().getResource("speaker1.jpg");
         ImageIcon speaker2Raw = new ImageIcon(speaker2);
         Image speaker2Scale = speaker2Raw.getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH);
         speaker2Icon = new ImageIcon(speaker2Scale);
 
         java.net.URL cam2 = BrowsePage.class.getClassLoader().getResource("camera2.jpg");
         ImageIcon cam2Raw = new ImageIcon(cam2);
-        Image cam2Scale = cam2Raw.getImage().getScaledInstance(170, 160, Image.SCALE_SMOOTH);
+        Image cam2Scale = cam2Raw.getImage().getScaledInstance(160, 150, Image.SCALE_SMOOTH);
         cam2Icon = new ImageIcon(cam2Scale);
         
     }
@@ -569,31 +573,40 @@ public class BrowsePage extends JFrame implements ActionListener {
             new CheckoutPage(cartItems, cartPrices, userBP).setVisible(true);
 
         } else if (e.getSource() == btnView1) {
-            new ProductDetailsPage("Wireless Earbuds", 1299, "Compact earbuds with clear sound and long \nbattery life", this, userBP, earbuds2Icon).setVisible(true);
+            new ProductDetailsPage("Wireless Earbuds", 1299, "Compact earbuds with clear sound and long \nbattery life", 
+                    this, userBP, earbuds2Icon).setVisible(true);
 
         } else if (e.getSource() == btnView2) {
-            new ProductDetailsPage("Smart Watch", 2499, "Tracks your steps, heart rate, and notifications \non your wrist", this, userBP, watch2Icon).setVisible(true);
+            new ProductDetailsPage("Smart Watch", 2499, "Tracks your steps, heart rate, and notifications \non your wrist", 
+                    this, userBP, watch2Icon).setVisible(true);
 
         } else if (e.getSource() == btnView3) {
-            new ProductDetailsPage("Phone Stand", 349, "Adjustable desk stand compatible with any \nsmartphone", this, userBP, stand2Icon).setVisible(true);
+            new ProductDetailsPage("Phone Stand", 349, "Adjustable desk stand compatible with any \nsmartphone", 
+                    this, userBP, stand2Icon).setVisible(true);
 
         } else if (e.getSource() == btnView4) {
-            new ProductDetailsPage("Portable Charger", 899, "10,000mAh power bank that charges \nyour devices on the go", this, userBP, charger2Icon).setVisible(true);
+            new ProductDetailsPage("Portable Charger", 899, "10,000mAh power bank that charges \nyour devices on the go", 
+                    this, userBP, charger2Icon).setVisible(true);
 
         } else if (e.getSource() == btnView5) {
-            new ProductDetailsPage("USB Hub", 599, "4-port USB hub to connect multiple devices \nat once", this, userBP, usb2Icon).setVisible(true);
+            new ProductDetailsPage("USB Hub", 599, "4-port USB hub to connect multiple devices \nat once", 
+                    this, userBP, usb2Icon).setVisible(true);
 
         } else if (e.getSource() == btnView6) {
-            new ProductDetailsPage("LED Desk Lamp", 749, "Touch-controlled lamp with adjustable brightness \nlevels", this, userBP, lamp2Icon).setVisible(true);
+            new ProductDetailsPage("LED Desk Lamp", 749, "Touch-controlled lamp with adjustable brightness \nlevels", 
+                    this, userBP, lamp2Icon).setVisible(true);
 
         } else if (e.getSource() == btnView7) {
-            new ProductDetailsPage("Bluetooth Speaker", 999, "Portable speaker with powerful sound and \nwireless Bluetooth connectivity", this, userBP, speaker2Icon).setVisible(true);
+            new ProductDetailsPage("Bluetooth Speaker", 999, "Portable speaker with powerful sound and \nwireless Bluetooth connectivity", 
+                    this, userBP, speaker2Icon).setVisible(true);
 
         } else if (e.getSource() == btnView9) {
-            new ProductDetailsPage("Gaming Controller", 1299, "Wireless controller compatible with PC, \nmobile devices and gaming consoles", this, userBP, controller2Icon).setVisible(true);
+            new ProductDetailsPage("Gaming Controller", 1299, "Wireless controller compatible with PC, \nmobile devices and gaming consoles", 
+                    this, userBP, controller2Icon).setVisible(true);
 
         } else if (e.getSource() == btnView8) {
-            new ProductDetailsPage("Digital Camera", 3499, "Capture high-quality photos and videos with \nadvanced camera features", this, userBP, cam2Icon).setVisible(true);
+            new ProductDetailsPage("Digital Camera", 3499, "Capture high-quality photos and videos with \nadvanced camera features", 
+                    this, userBP, cam2Icon).setVisible(true);
         }
 
             if (e.getSource() == btnAdd1) addToCart("Wireless Earbuds", 1299, 1);

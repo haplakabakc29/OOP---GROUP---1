@@ -17,4 +17,5 @@ public class LoggedUserData extends UserData {
     public String getConfDisplayInfo() {
         return "Thankyou for Ordering " + getUsername();
     }
+    
 }

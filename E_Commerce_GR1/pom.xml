@@ -12,4 +12,11 @@
         <exec.mainClass>com.mycompany.viewprofile.ViewProfile</exec.mainClass>
     </properties>
     <name>eCommerceApp</name>
+     <dependencies>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.0.33</version>
+        </dependency>
+    </dependencies>
 </project>

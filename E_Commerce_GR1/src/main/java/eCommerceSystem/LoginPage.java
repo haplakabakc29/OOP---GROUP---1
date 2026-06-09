@@ -1,13 +1,16 @@
 package eCommerceSystem;
+import eCommerceDB.DataBaseConnection;
 import eCommerceData.LoggedUserData;
-import eCommerceData.UserData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
-public class LoginPage extends JFrame {
+public class LoginPage extends JFrame implements ActionListener {
 
     private JLabel brandName, lblEmail, lblPass, lblTagline, lblGroup1, lblImageLogo;
     private JTextField emailField;
@@ -91,6 +94,7 @@ public class LoginPage extends JFrame {
         loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         loginButton.setBorder(BorderFactory.createEmptyBorder());
         loginButton.setBounds(50, 320, 250, 45);
+        loginButton.addActionListener(this);
         card.add(loginButton);
 
         createAccountButton = new JButton("Create Account");
@@ -101,6 +105,7 @@ public class LoginPage extends JFrame {
         createAccountButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         createAccountButton.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
         createAccountButton.setBounds(50, 375, 250, 35);
+        createAccountButton.addActionListener(this);
         card.add(createAccountButton);
 
         sep2 = new JSeparator();
@@ -113,52 +118,77 @@ public class LoginPage extends JFrame {
         lblGroup1.setForeground(new Color(200, 200, 200));
         lblGroup1.setBounds(25, 430, 300, 20);
         card.add(lblGroup1);
+    }
 
-        loginButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String username = emailField.getText().trim();
-                String password = new String(passwordField.getPassword()).trim();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == createAccountButton) {
+            dispose();
+            CreateAccountPage register = new CreateAccountPage();
+            register.setVisible(true);
+            
+        } else if (e.getSource() == loginButton) {
+            String inputUser = emailField.getText().trim();
+            String inputPass = new String(passwordField.getPassword()).trim();
 
-                if (username.isEmpty() || password.isEmpty()) {
-                    JOptionPane.showMessageDialog(
-                            null, 
-                            "Please enter your Username and Password.", 
-                            "Login Error", 
-                            JOptionPane.ERROR_MESSAGE);
-                    return;
+            if (inputUser.isEmpty() || inputPass.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this, 
+                        "Please enter your Username and Password.", 
+                        "Login Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+            LoggedUserData user = null;
+            boolean loginSuccess = false;
+
+            try (Connection conn = DataBaseConnection.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                
+                pstmt.setString(1, inputUser);
+                pstmt.setString(2, inputPass);
+                
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                    String fetchedUser = rs.getString("username");
+                    String fetchedPass = rs.getString("password");
+                    String fetchedStreet = rs.getString("street");
+                    String fetchedCity = rs.getString("city");
+                    String fetchedProvince = rs.getString("province");
+
+                    user = new LoggedUserData(fetchedUser, fetchedPass, fetchedStreet, fetchedCity, fetchedProvince);
+                    loginSuccess = true;
                 }
-
-                if (!UserData.isValidLogin(username, password)) {
-                    JOptionPane.showMessageDialog(
-                            null, 
-                            "Invalid username or password.", 
-                            "Login Error", 
-                            JOptionPane.ERROR_MESSAGE);
-                    return;
-                    
-                } else {
-
-                // bago
-                UserData account = UserData.getAccount(username);
-                LoggedUserData loggedUSER = new LoggedUserData(
-                    account.getUsername(),
-                    account.getPassword(),
-                    account.getStreet(),
-                    account.getCity(),
-                    account.getProvince());
-
+            }
+                
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(
+                        this, 
+                        "Database Connection Error: " + ex.getMessage(), 
+                        "ERROR", 
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            if (loginSuccess && user != null) {
+                JOptionPane.showMessageDialog(
+                        this, 
+                        "Welcome to Gadget Market!", 
+                        "Greetings", 
+                        JOptionPane.INFORMATION_MESSAGE);
                 dispose();
-                new BrowsePage(loggedUSER).setVisible(true);
+                
+                BrowsePage landingPage = new BrowsePage(user);
+                landingPage.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(
+                        this, 
+                        "Invalid username or password.", 
+                        "Login Error", 
+                        JOptionPane.ERROR_MESSAGE);
             }
-            }
-        });
-
-        createAccountButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                CreateAccountPage createA = new CreateAccountPage();
-                        createA.setVisible(true);
-            }
-        });
+        }
     }
 }

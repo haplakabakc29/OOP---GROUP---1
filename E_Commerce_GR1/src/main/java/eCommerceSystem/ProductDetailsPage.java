@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public class ProductDetailsPage extends JFrame implements ActionListener {
 
-    private JButton btnBack, btnCart, btnProfile, btnBuyNow, btnInc, btnDec, btnAddToCart;
+    private JButton btnBack, btnBuyNow, btnInc, btnDec, btnAddToCart;
     private JLabel lblImage, lblProductName, lblProductPrice, lblDesc, lblStars, lblReview, lblQty;
     private JSeparator navLine, line1, line2, line3;
     private JTextArea lblProductDesc;
@@ -18,14 +18,12 @@ public class ProductDetailsPage extends JFrame implements ActionListener {
     private BrowsePage mainPage;
     private String currentName;
     private int currentPrice;
-    private ImageIcon productIcon;
 
     public ProductDetailsPage(String name, int price, String description, BrowsePage main, LoggedUserData user, ImageIcon icon) {
         this.mainPage = main;
         this.currentName = name;
         this.currentPrice = price;
         this.userPD = user;
-        this.productIcon = icon;
             
         setLayout(null);
         setSize(550, 500);
@@ -101,7 +99,7 @@ public class ProductDetailsPage extends JFrame implements ActionListener {
         lblStars.setForeground(Color.DARK_GRAY);
         add(lblStars);
 
-        lblReview = new JLabel("(5 reviews)");
+        lblReview = new JLabel("(1000+ reviews)");
         lblReview.setBounds(295, 230, 150, 25);
         lblReview.setFont(new Font("Serif", Font.PLAIN, 15));
         lblReview.setForeground(Color.DARK_GRAY);
@@ -171,8 +169,9 @@ public class ProductDetailsPage extends JFrame implements ActionListener {
             
         } else if (e.getSource() == btnBuyNow) {
             int totalPrice = currentPrice * QTY;
-            dispose();
-            new PaymentPage(userPD, QTY, totalPrice).setVisible(true);
+            dispose(); 
+            String itemsSummary = currentName + " (x" + QTY + ")";
+            new PaymentPage(userPD, QTY, totalPrice, itemsSummary).setVisible(true);
         }
     }
 }

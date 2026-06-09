@@ -1,18 +1,20 @@
 package eCommerceSystem;
 
-import eCommerceData.UserData;
-
+import eCommerceDB.DataBaseConnection;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 public class CreateAccountPage extends JFrame {
 
     private JTextField usernameField, streetField, cityField, provinceField;
     private JPasswordField passwordField, confirmPassField;
     private JButton registerButton, btnLogin;
-    private JLabel lblLogo, brandName, tagline, tagline2, alreadyLbl, formTitle, formSub, lblUsername, lblPass, lblConfirm, lblStreet, lblCity, lblProvince;
+    private JLabel lblLogo, brandName, tagline, tagline2, alreadyLbl, formTitle, 
+            formSub, lblUsername, lblPass, lblConfirm, lblStreet, lblCity, lblProvince;
 
     public CreateAccountPage() {
         setTitle("Create Account");
@@ -137,7 +139,7 @@ public class CreateAccountPage extends JFrame {
         confirmPassField.setBounds(280, 200, 220, 36);
         rightPanel.add(confirmPassField);
 
-        lblStreet = new JLabel("Street");
+        lblStreet = new JLabel("Street, Subdivision, & Barangay");
         lblStreet.setFont(new Font("Serif", Font.PLAIN, 13));
         lblStreet.setForeground(Color.GRAY);
         lblStreet.setBounds(40, 248, 200, 20);
@@ -193,79 +195,125 @@ public class CreateAccountPage extends JFrame {
             }
         });
 
-        registerButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String username    = usernameField.getText().trim();
-                String password    = new String(passwordField.getPassword()).trim();
-                String confirmPass = new String(confirmPassField.getPassword()).trim();
-                String street      = streetField.getText().trim();
-                String city        = cityField.getText().trim();
-                String province    = provinceField.getText().trim();
+    registerButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            String username = usernameField.getText().trim();
+            String password = new String(passwordField.getPassword()).trim();
+            String confirmPass = new String(confirmPassField.getPassword()).trim();
+            String street = streetField.getText().trim();
+            String city = cityField.getText().trim();
+            String province = provinceField.getText().trim();
 
-                
-                if (
-                        username.isEmpty() || 
-                        password.isEmpty() || 
-                        confirmPass.isEmpty() || 
-                        street.isEmpty() || 
-                        city.isEmpty() || 
-                        province.isEmpty()
-                        
-                        ) 
-                {
-                    JOptionPane.showMessageDialog(
-                            null, 
-                            "Please fill in all fields.", 
-                            "Error", 
-                            JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                if (username.length() < 3) {
-                    JOptionPane.showMessageDialog(
-                            null, 
-                            "Username must be at least 3 characters.", 
-                            "Error", 
-                            JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                if (password.length() < 6) {
-                    JOptionPane.showMessageDialog(
-                            null, 
-                            "Password must be at least 6 characters.", 
-                            "Error", 
-                            JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                if (!password.equals(confirmPass)) {
-                    JOptionPane.showMessageDialog(
-                            null, 
-                            "Passwords do not match!", 
-                            "Error", 
-                            JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                if (UserData.usernameExists(username)) {
-                    JOptionPane.showMessageDialog(
-                            null, 
-                            "Username already taken. Please choose another.", 
-                            "Error", 
-                            JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                UserData.register(username, password, street, city, province);
+            if (
+                    username.isEmpty() || 
+                    password.isEmpty() || 
+                    confirmPass.isEmpty() || 
+                    street.isEmpty() || 
+                    city.isEmpty() || 
+                    province.isEmpty()
+                    ) 
+            {
                 JOptionPane.showMessageDialog(
                         null, 
-                        "Account created successfully!\nYou can now log in.", 
-                        "Success", 
-                        JOptionPane.INFORMATION_MESSAGE);
-                dispose();
-                         LoginPage login = new LoginPage();
-                            login.setVisible(true);
+                        "Please fill in all fields", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (username.length() < 3) {
+                JOptionPane.showMessageDialog(
+                        null, 
+                        "Username must be at least 3 characters", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            if (street.length() < 5) {
+                JOptionPane.showMessageDialog(
+                        null, 
+                        "Please input your Street No. and Barangay/Subdivision", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+                }
+
+                if (city.length() < 3) {
+                JOptionPane.showMessageDialog(
+                        null, 
+                        "Please input your City", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+                }
+
+                if (province.length() < 3) {
+                JOptionPane.showMessageDialog(
+                        null, 
+                        "Please input your Province", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+                }
+
+            if (password.length() < 6) {
+                JOptionPane.showMessageDialog(
+                        null, 
+                        "Password must be at least 6 characters", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (!password.equals(confirmPass)) {
+                JOptionPane.showMessageDialog(
+                        null, 
+                        "Passwords do not match!", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+
+            String sql = "INSERT INTO users (username, password, street, city, province) VALUES (?, ?, ?, ?, ?)";
+            try (Connection conn = DataBaseConnection.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                if (conn != null) {
+                    pstmt.setString(1, username);
+                    pstmt.setString(2, password);
+                    pstmt.setString(3, street);
+                    pstmt.setString(4, city);
+                    pstmt.setString(5, province);
+
+                    pstmt.executeUpdate();
+
+                    JOptionPane.showMessageDialog(
+                            null, 
+                            "Account created successfully!\nYou can now log in.", 
+                            "Success", 
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                    dispose();
+                    LoginPage login = new LoginPage();
+                    login.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(
+                            null, 
+                            "Database Connection Error! Check your XAMPP Status.", 
+                            "Error", 
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(
+                        null, 
+                        "Database Error: " + ex.getMessage(), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                
+                ex.printStackTrace();
+            }
             }
         });
     }

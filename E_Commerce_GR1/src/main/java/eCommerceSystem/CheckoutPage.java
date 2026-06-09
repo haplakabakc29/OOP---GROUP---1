@@ -22,10 +22,13 @@ public class CheckoutPage extends JFrame implements ActionListener {
     private ArrayList<String> itemNames;
     private ArrayList<Integer> itemPrices;
 
+    public static CheckoutPage coPage;
+    
     public CheckoutPage(ArrayList<String> itemNames, ArrayList<Integer> itemPrices, LoggedUserData user) {
         this.userCO    = user;
         this.itemNames  = itemNames;
         this.itemPrices = itemPrices;
+        coPage = this;
 
         setTitle("Shopping Cart");
         setSize(550, 590);
@@ -132,43 +135,59 @@ public class CheckoutPage extends JFrame implements ActionListener {
         card.add(proceedButton);
 
         proceedButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (totalAmount == 0) {
-                    JOptionPane.showMessageDialog(null, "Your cart is empty!", "Error", JOptionPane.WARNING_MESSAGE);
-                } else {
-                    int count = itemNames.size();
-                    int total = totalAmount;
-                    dispose();
-                    new PaymentPage(userCO, count, total).setVisible(true);
+        public void actionPerformed(ActionEvent e) {
+            if (totalAmount == 0) {
+                JOptionPane.showMessageDialog(null, "Your cart is empty!", "Error", JOptionPane.WARNING_MESSAGE);
+            } else {
+                int count = itemNames.size();
+                int total = totalAmount;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < itemNames.size(); i++) {
+                    sb.append(itemNames.get(i));
+                    if (i < itemNames.size() - 1) {
+                        sb.append(", ");
+                    }
+                }
+                String combinedItemsStr = sb.toString();
+                dispose();
+                new PaymentPage(userCO, count, total, combinedItemsStr).setVisible(true);
                 }
             }
         });
     }
-
+        public void clearCart() {
+            itemNames.clear();
+            itemPrices.clear();
+            listModel.clear();
+            totalAmount = 0;
+            totalLabel.setText("₱ 0");
+        }
+        
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnBack) {
             dispose();
 
         } else if (e.getSource() == rmvBTN) {
-            int indx = receiptArea.getSelectedIndex();
-            if (indx != -1) {
-                int response = JOptionPane.showConfirmDialog(
-                    this,
-                    "Are you sure you want to remove this item?",
-                    "Confirm Removal",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.WARNING_MESSAGE
-                );
-                if (response == JOptionPane.YES_OPTION) {
-                    totalAmount -= itemPrices.get(indx);
-                    totalLabel.setText("₱ " + totalAmount);
-                    itemNames.remove(indx);
-                    itemPrices.remove(indx);
-                    listModel.clear();
-                    for (int i = 0; i < itemNames.size(); i++) {
-                        listModel.addElement((i + 1) + ". " + itemNames.get(i) + " - ₱ " + itemPrices.get(i));
-                    }
+        int indx = receiptArea.getSelectedIndex();
+        
+        if (indx != -1) {
+            int response = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to remove this item?",
+                "Confirm Removal",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+            );
+            if (response == JOptionPane.YES_OPTION) {
+                totalAmount -= itemPrices.get(indx);
+                totalLabel.setText("₱ " + totalAmount);
+                itemNames.remove(indx);
+                itemPrices.remove(indx);
+                listModel.clear();
+                for (int i = 0; i < itemNames.size(); i++) {
+                    listModel.addElement((i + 1) + ". " + itemNames.get(i) + " - ₱ " + itemPrices.get(i));
+                }
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Select an Item to Remove", "Error", JOptionPane.ERROR_MESSAGE);
@@ -178,23 +197,23 @@ public class CheckoutPage extends JFrame implements ActionListener {
             if (itemNames.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Your cart is already empty!", "Info", JOptionPane.INFORMATION_MESSAGE);
                 
-            }else {
-            int response = JOptionPane.showConfirmDialog(
-                this,
-                "Remove all items from cart?",
-                "Clear Cart",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE
-            );
-            
-            if (response == JOptionPane.YES_OPTION) {
-                itemNames.clear();
-                itemPrices.clear();
-                listModel.clear();
-                totalAmount = 0;
-                totalLabel.setText("₱ 0");
+            } else {
+                int response = JOptionPane.showConfirmDialog(
+                    this,
+                    "Remove all items from cart?",
+                    "Clear Cart",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+                );
+                
+                if (response == JOptionPane.YES_OPTION) {
+                    itemNames.clear();
+                    itemPrices.clear();
+                    listModel.clear();
+                    totalAmount = 0;
+                    totalLabel.setText("₱ 0");
+                }
             }
         }
     }
-}
 }

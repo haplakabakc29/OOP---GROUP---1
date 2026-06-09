@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class UserData { // model
     private String username;
     private String password;
-    private String street;
+    String street;
     private String city;
     private String province;
 
@@ -78,4 +78,9 @@ public class UserData { // model
         }
         return null;
     }
+    
+    public String getFullAddress() {
+        return street + "\n" + city + ", " + province;
+}
+    
 }

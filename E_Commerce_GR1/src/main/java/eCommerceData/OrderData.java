@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class OrderData {
 
-    public static class Order { // model
+    public static class Order { //viewprofile
         private static int counter = 1;
 
         private int orderNumber; 
@@ -52,5 +52,6 @@ public class OrderData {
     public static void removeOrder(Order order) {
         orders.remove(order);
     }
+    
     
 }

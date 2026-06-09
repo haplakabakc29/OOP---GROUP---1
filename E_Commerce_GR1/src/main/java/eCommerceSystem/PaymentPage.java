@@ -1,7 +1,7 @@
 package eCommerceSystem;
+import eCommerceDB.DataBaseSaver;
 import eCommerceData.LoggedUserData;
 import eCommerceData.OrderData;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,11 +17,18 @@ public class PaymentPage extends JFrame implements ActionListener {
 
     private LoggedUserData userPP;
     private int finalCount, finalTotal;
+    
+    private String orderItems;
+    private int grandTotal;
+    private String cardNumber, expiry, cvv;
+    
 
-    public PaymentPage(LoggedUserData user, int count, int total) {
-        this.userPP     = user;
+    public PaymentPage(LoggedUserData user, int count, int total, String items) {
+        this.userPP = user;
         this.finalCount = count;
         this.finalTotal = total;
+        this.grandTotal = total;
+        this.orderItems = items;
         PaymentPageUI();
     }
 
@@ -168,7 +175,6 @@ public class PaymentPage extends JFrame implements ActionListener {
         lbCODTxt.setBounds(0, 48, 450, 25);
         codPanel.add(lbCODTxt);
 
-        // swap swap panel
         rbCard.addActionListener(e -> {
             cardPanel.setVisible(true);
             gcashPanel.setVisible(false);
@@ -197,40 +203,76 @@ public class PaymentPage extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         if (e.getSource() == btnBack) {
             dispose();
-            LoginPage login = new LoginPage();
-            login.setVisible(true);
-
+            
         } else if (e.getSource() == confirmButton) {
-
-            if (rbCard.isSelected()) {
-                String cardNumber = cardNumberField.getText().trim();
-                String expiry = expiryField.getText().trim();
-                String cvv = cvvField.getText().trim();
-
-                if (!cardNumber.matches("\\d{16}")) {
-                    JOptionPane.showMessageDialog(null, "Card number must be exactly 16 digits!", "Error", JOptionPane.ERROR_MESSAGE); return;
-                }
-                if (!expiry.matches("\\d{2}/\\d{2}")) {
-                    JOptionPane.showMessageDialog(null, "Expiry must be in MM/YY format! (e.g. 07/27)", "Error", JOptionPane.ERROR_MESSAGE); return;
-                }
-                if (!cvv.matches("\\d{3,4}")) {
-                    JOptionPane.showMessageDialog(null, "CVV must be 3 or 4 digits!", "Error", JOptionPane.ERROR_MESSAGE); return;
-                }
-
-            } else if (rbGcash.isSelected()) {
+            
+            if (rbCOD.isSelected()) {
+                DataBaseSaver.saveTransaction(userPP.getUsername(), orderItems, grandTotal, "COD", "N/A", "N/A");
+                OrderData.addOrder(finalCount, finalTotal);
+                dispose();
+                
+            if (CheckoutPage.coPage != null) {
+                CheckoutPage.coPage.clearCart();
+                
+                
+                OrderConfirmationPage successScreen = new OrderConfirmationPage(userPP);
+                successScreen.setVisible(true);
+            }}
+            
+            else if (rbGcash.isSelected()) {
                 String gcashNum = gcashField.getText().trim();
-                if (!gcashNum.matches("09\\d{9}")) {
-                    JOptionPane.showMessageDialog(null, "GCash number must be 11 digits starting with 09!", "Error", JOptionPane.ERROR_MESSAGE); return;
+                
+                if (CheckoutPage.coPage != null) {
+                    CheckoutPage.coPage.clearCart();
+                }
+                
+                if (gcashNum.length() != 11) {
+                    JOptionPane.showMessageDialog(null, "GCash number must be exactly 11 digits!", "Error", JOptionPane.ERROR_MESSAGE);
+                } else if (!gcashNum.startsWith("09")) {
+                    JOptionPane.showMessageDialog(null, "GCash number must start with 09!", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    if (CheckoutPage.coPage != null) {
+                    CheckoutPage.coPage.clearCart();
+                    
+                    DataBaseSaver.saveTransaction(userPP.getUsername(), orderItems, grandTotal, gcashNum, "GCash", "N/A");
+                    OrderData.addOrder(finalCount, finalTotal);
+                    dispose();
+                    
+                    OrderConfirmationPage successScreen = new OrderConfirmationPage(userPP);
+                    successScreen.setVisible(true);
                 }
             }
+        }
+            
+            else if (rbCard.isSelected()) {
+                cardNumber = cardNumberField.getText().trim();
+                expiry = expiryField.getText().trim();
+                cvv = cvvField.getText().trim();
+                
+                if (CheckoutPage.coPage != null) {
+                    CheckoutPage.coPage.clearCart();
+                }
 
-
-            OrderData.addOrder(finalCount, finalTotal);
-            dispose();
-            new OrderConfirmationPage(userPP).setVisible(true);
+                if (cardNumber.length() != 16) {
+                    JOptionPane.showMessageDialog(null, "Card number must be 16 digits!", "Error", JOptionPane.ERROR_MESSAGE);
+                } else if (expiry.length() != 5) {
+                    JOptionPane.showMessageDialog(null, "Expiry must be in MM/YY format!", "Error", JOptionPane.ERROR_MESSAGE);
+                } else if (cvv.length() < 3 || cvv.length() > 4) {
+                    JOptionPane.showMessageDialog(null, "CVV must be 3 or 4 digits!", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    if (CheckoutPage.coPage != null) {
+                        CheckoutPage.coPage.clearCart();
+                        
+                    DataBaseSaver.saveTransaction(userPP.getUsername(), orderItems, grandTotal, cardNumber, expiry, cvv);
+                    OrderData.addOrder(finalCount, finalTotal);
+                    dispose();
+                    OrderConfirmationPage successScreen = new OrderConfirmationPage(userPP);
+                    successScreen.setVisible(true);
+                    }
+                }
+            }
         }
     }
 }
