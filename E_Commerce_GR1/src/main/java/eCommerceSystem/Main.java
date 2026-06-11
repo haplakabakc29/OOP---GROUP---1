@@ -7,5 +7,7 @@ public class Main{
     mainPage.setVisible(true);
     
     // delete txt file (header)
+    
+    // wala pong account in db (need mag create account)
 }
 }
