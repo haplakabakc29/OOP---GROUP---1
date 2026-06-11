@@ -239,23 +239,38 @@ public class CreateAccountPage extends JFrame {
                 return;
                 }
 
-                if (city.length() < 3) {
+                    boolean streetHasNumber = false;
+                    for (int i = 0; i < street.length(); i++) {
+                    if (Character.isDigit(street.charAt(i))) {
+                    streetHasNumber = true;
+                }
+            }
+                    if (!streetHasNumber) {
                 JOptionPane.showMessageDialog(
                         null, 
-                        "Please input your City", 
+                        "Street must include a house/lot number", 
                         "Error", 
                         JOptionPane.ERROR_MESSAGE);
-                return;
-                }
+                    return;
+            }
 
-                if (province.length() < 3) {
-                JOptionPane.showMessageDialog(
-                        null, 
-                        "Please input your Province", 
-                        "Error", 
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-                }
+            if (city.length() < 3) {
+            JOptionPane.showMessageDialog(
+                    null, 
+                    "Please input your City", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+            }
+
+            if (province.length() < 3) {
+            JOptionPane.showMessageDialog(
+                    null, 
+                    "Please input your Province", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+            }
 
             if (password.length() < 6) {
                 JOptionPane.showMessageDialog(
@@ -288,7 +303,7 @@ public class CreateAccountPage extends JFrame {
                     pstmt.setString(5, province);
 
                     pstmt.executeUpdate();
-
+                    
                     JOptionPane.showMessageDialog(
                             null, 
                             "Account created successfully!\nYou can now log in.", 
@@ -308,7 +323,7 @@ public class CreateAccountPage extends JFrame {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(
                         null, 
-                        "Database Error: " + ex.getMessage(), 
+                        "Error: " + ex.getMessage(), 
                         "Error", 
                         JOptionPane.ERROR_MESSAGE);
                 

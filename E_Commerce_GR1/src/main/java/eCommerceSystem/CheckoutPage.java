@@ -135,26 +135,26 @@ public class CheckoutPage extends JFrame implements ActionListener {
         card.add(proceedButton);
 
         proceedButton.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            if (totalAmount == 0) {
-                JOptionPane.showMessageDialog(null, "Your cart is empty!", "Error", JOptionPane.WARNING_MESSAGE);
-            } else {
-                int count = itemNames.size();
-                int total = totalAmount;
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < itemNames.size(); i++) {
-                    sb.append(itemNames.get(i));
-                    if (i < itemNames.size() - 1) {
-                        sb.append(", ");
-                    }
-                }
-                String combinedItemsStr = sb.toString();
-                dispose();
-                new PaymentPage(userCO, count, total, combinedItemsStr).setVisible(true);
+    public void actionPerformed(ActionEvent e) {
+        if (totalAmount == 0) {
+            JOptionPane.showMessageDialog(null, "Your cart is empty!", "Error", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int count = itemNames.size();
+            int total = totalAmount;
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < itemNames.size(); i++) {
+                sb.append(itemNames.get(i));
+                if (i < itemNames.size() - 1) {
+                    sb.append(", ");
                 }
             }
-        });
-    }
+            String combinedItemsStr = sb.toString();
+            dispose();
+            new PaymentPage(userCO, count, total, combinedItemsStr).setVisible(true);
+            }
+        }
+    });
+}
         public void clearCart() {
             itemNames.clear();
             itemPrices.clear();

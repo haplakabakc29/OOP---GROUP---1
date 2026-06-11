@@ -175,21 +175,29 @@ public class PaymentPage extends JFrame implements ActionListener {
         lbCODTxt.setBounds(0, 48, 450, 25);
         codPanel.add(lbCODTxt);
 
-        rbCard.addActionListener(e -> {
+   rbCard.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
             cardPanel.setVisible(true);
             gcashPanel.setVisible(false);
             codPanel.setVisible(false);
-        });
-        rbGcash.addActionListener(e -> {
+        }
+    });
+
+    rbGcash.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
             cardPanel.setVisible(false);
             gcashPanel.setVisible(true);
             codPanel.setVisible(false);
-        });
-        rbCOD.addActionListener(e -> {
+        }
+    });
+
+    rbCOD.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
             cardPanel.setVisible(false);
             gcashPanel.setVisible(false);
             codPanel.setVisible(true);
-        });
+        }
+    });
 
         confirmButton = new JButton("Confirm Payment");
         confirmButton.setBounds(20, 355, 450, 45);

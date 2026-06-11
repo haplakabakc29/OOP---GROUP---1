@@ -1,6 +1,7 @@
 package eCommerceSystem;
 import eCommerceDB.DataBaseConnection;
 import eCommerceData.LoggedUserData;
+import eCommerceData.UserData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -140,55 +141,76 @@ public class LoginPage extends JFrame implements ActionListener {
                 return;
             }
             
-            String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
-            LoggedUserData user = null;
-            boolean loginSuccess = false;
-
-            try (Connection conn = DataBaseConnection.getConnection();
-                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                
-                pstmt.setString(1, inputUser);
-                pstmt.setString(2, inputPass);
-                
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    if (rs.next()) {
-                    String fetchedUser = rs.getString("username");
-                    String fetchedPass = rs.getString("password");
-                    String fetchedStreet = rs.getString("street");
-                    String fetchedCity = rs.getString("city");
-                    String fetchedProvince = rs.getString("province");
-
-                    user = new LoggedUserData(fetchedUser, fetchedPass, fetchedStreet, fetchedCity, fetchedProvince);
-                    loginSuccess = true;
-                }
-            }
-                
-            } catch (Exception ex) {
+                if (inputUser.length() < 3) {
                 JOptionPane.showMessageDialog(
                         this, 
-                        "Database Connection Error: " + ex.getMessage(), 
-                        "ERROR", 
+                        "Username must be at least 3 characters.", 
+                        "Login Error", 
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
-            if (loginSuccess && user != null) {
+
+            if (inputPass.length() < 6) {
                 JOptionPane.showMessageDialog(
                         this, 
-                        "Welcome to Gadget Market!", 
-                        "Greetings", 
-                        JOptionPane.INFORMATION_MESSAGE);
-                dispose();
-                
-                BrowsePage landingPage = new BrowsePage(user);
-                landingPage.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(
-                        this, 
-                        "Invalid username or password.", 
+                        "Password must be at least 6 characters.", 
                         "Login Error", 
                         JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        }
-    }
+
+            String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+            LoggedUserData user = null;
+            boolean loginSuccess = false;
+            boolean dbError = false;
+
+            try (Connection conn = DataBaseConnection.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setString(1, inputUser);
+                pstmt.setString(2, inputPass);
+
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        String fetchedUser = rs.getString("username");
+                        String fetchedPass = rs.getString("password");
+                        String fetchedStreet = rs.getString("street");
+                        String fetchedCity = rs.getString("city");
+                        String fetchedProvince = rs.getString("province");
+
+                        user = new LoggedUserData(fetchedUser, fetchedPass, fetchedStreet, fetchedCity, fetchedProvince);
+                        loginSuccess = true;
+                    }
+                }
+
+            } catch (Exception ex) {
+                dbError = true;
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Database Connection Error: " + ex.getMessage(),
+                        "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+            if (!dbError) {
+                if (loginSuccess && user != null) {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Welcome to Gadget Market!",
+                            "Greetings",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                    BrowsePage landingPage = new BrowsePage(user);
+                    landingPage.setVisible(true);
+
+                } else {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Invalid username or password.",
+                            "Login Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+       }
+   }
 }

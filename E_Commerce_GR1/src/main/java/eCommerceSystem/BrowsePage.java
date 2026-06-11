@@ -508,7 +508,6 @@ public class BrowsePage extends JFrame implements ActionListener {
         btnAdd9.addActionListener(this);
         productPanel9.add(btnAdd9);
         productsPanel.add(productPanel9);
-       
         
     // images para dun sa product details (2)
     
