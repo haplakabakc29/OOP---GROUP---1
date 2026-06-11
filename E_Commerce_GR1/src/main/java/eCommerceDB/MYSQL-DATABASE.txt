@@ -1,0 +1,39 @@
+CREATING A DATABASE
+
+OPEN XAMMP
+
+START THE MYSQL AND APACHE
+
+GO TO LocalHost/myphpadmin
+
+Create a db named 
+
+gadgetdb
+
+create two tables using this syntax 
+
+for users
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    street VARCHAR(255) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    province VARCHAR(100) NOT NULL
+);
+
+for list of transaction
+
+CREATE TABLE listtransactions (
+    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL,
+    itemnames TEXT NOT NULL,
+    itemprices INT NOT NULL,
+    cardnumber VARCHAR(100) NOT NULL,
+    cardexpiry VARCHAR(50) NOT NULL,
+    cardcvv VARCHAR(20) NOT NULL,
+    order_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+Thank you!
